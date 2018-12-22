@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "version": "",
+  "name": "aplikacja do pracy inzynierskiej",
+  "version": "1.0.0",
   "dependencies": {
     "mariadb": "^2.0.2-rc"
   }
