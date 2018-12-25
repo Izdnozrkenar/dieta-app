@@ -1,8 +1,5 @@
 const events = require('events');
-const mariadb = require('mariadb');
-const mariadbcallback = require('mariadb/callback');
-const dbConnector = require('./poolmodule');
-const randomTS = require('./randomTS.js');
+
 
 exports.updateDishesDatabase = function (pool, conn) {
 
