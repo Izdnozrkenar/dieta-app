@@ -1,5 +1,5 @@
+'use strict';
 const events = require('events');
-
 
 exports.updateDishesDatabase = function (pool, conn) {
 
@@ -28,78 +28,65 @@ exports.updateDishesDatabase = function (pool, conn) {
     function updateDishesStaticFlags() {
         pool.query('SELECT dshID FROM dishes ORDER BY dshEnergy DESC LIMIT 10')
             .then(res => {
-                console.log(res);
                 res.forEach(dish => {
-                    pool.query('UPDATE dishes SET dshIsRichInEnergy= TRUE WHERE dshID= ' + dish.dshID);
+                    conn.query('UPDATE dishes SET dshIsRichInEnergy= TRUE WHERE dshID= ' + dish.dshID);
                 })
             })
 
         pool.query('SELECT dshID FROM dishes ORDER BY dshEnergy ASC LIMIT 10')
             .then(res => {
-                console.log(res);
                 res.forEach(dish => {
-                    pool.query('UPDATE dishes SET dshIsNotRichInEnergy= TRUE WHERE dshID= ' + dish.dshID);
+                    conn.query('UPDATE dishes SET dshIsNotRichInEnergy= TRUE WHERE dshID= ' + dish.dshID);
                 })
             })
 
         pool.query('SELECT dshID FROM dishes ORDER BY dshProtein DESC LIMIT 10')
             .then(res => {
-                console.log(res);
                 res.forEach(dish => {
-                    pool.query('UPDATE dishes SET dshIsRichInProtein= TRUE WHERE dshID= ' + dish.dshID);
+                    conn.query('UPDATE dishes SET dshIsRichInProtein= TRUE WHERE dshID= ' + dish.dshID);
                 })
             })
         pool.query('SELECT dshID FROM dishes ORDER BY dshProtein ASC LIMIT 10')
             .then(res => {
-                console.log(res);
                 res.forEach(dish => {
-                    pool.query('UPDATE dishes SET dshIsNotRichInProtein= TRUE WHERE dshID= ' + dish.dshID);
+                    conn.query('UPDATE dishes SET dshIsNotRichInProtein= TRUE WHERE dshID= ' + dish.dshID);
                 })
             })
         pool.query('SELECT dshID FROM dishes ORDER BY dshFat DESC LIMIT 10')
             .then(res => {
-                console.log(res);
                 res.forEach(dish => {
-                    pool.query('UPDATE dishes SET dshIsRichInFat= TRUE WHERE dshID= ' + dish.dshID);
+                    conn.query('UPDATE dishes SET dshIsRichInFat= TRUE WHERE dshID= ' + dish.dshID);
                 })
             })
         pool.query('SELECT dshID FROM dishes ORDER BY dshFat ASC LIMIT 10')
             .then(res => {
-                console.log(res);
                 res.forEach(dish => {
-                    pool.query('UPDATE dishes SET dshIsNotRichInFat= TRUE WHERE dshID= ' + dish.dshID);
+                    conn.query('UPDATE dishes SET dshIsNotRichInFat= TRUE WHERE dshID= ' + dish.dshID);
                 })
             })
             pool.query('SELECT dshID FROM dishes ORDER BY dshCarbohydrates DESC LIMIT 10')
             .then(res => {
-                console.log(res);
                 res.forEach(dish => {
-                    pool.query('UPDATE dishes SET dshIsRichInCarbohydrates= TRUE WHERE dshID= ' + dish.dshID);
+                    conn.query('UPDATE dishes SET dshIsRichInCarbohydrates= TRUE WHERE dshID= ' + dish.dshID);
                 })
             })
             pool.query('SELECT dshID FROM dishes ORDER BY dshCarbohydrates ASC LIMIT 10')
             .then(res => {
-                console.log(res);
                 res.forEach(dish => {
-                    pool.query('UPDATE dishes SET dshIsNotRichInCarbohydrates= TRUE WHERE dshID= ' + dish.dshID);
+                    conn.query('UPDATE dishes SET dshIsNotRichInCarbohydrates= TRUE WHERE dshID= ' + dish.dshID);
                 })
             })
             pool.query('SELECT dshID FROM dishes ORDER BY dshFiber DESC LIMIT 10')
             .then(res => {
-                console.log(res);
                 res.forEach(dish => {
-                    pool.query('UPDATE dishes SET dshIsRichInFiber= TRUE WHERE dshID= ' + dish.dshID);
+                    conn.query('UPDATE dishes SET dshIsRichInFiber= TRUE WHERE dshID= ' + dish.dshID);
                 })
             })
             pool.query('SELECT dshID FROM dishes ORDER BY dshFiber ASC LIMIT 10')
             .then(res => {
-                console.log(res);
                 res.forEach(dish => {
-                    pool.query('UPDATE dishes SET dshIsNotRichInFiber= TRUE WHERE dshID= ' + dish.dshID);
+                    conn.query('UPDATE dishes SET dshIsNotRichInFiber= TRUE WHERE dshID= ' + dish.dshID);
                 })
             })
-            console.log('sprawa zalatwiona');
-            
-
     }
 }
