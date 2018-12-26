@@ -15,7 +15,6 @@ exports.calculateRequirements = function (sex, age, pal, weigth) {
     function evaluateOnPhisicalFeatures() {
 
         if (sex == 1) {
-            console.log('sprawdzilem plec i jest mezczyzna');
             switch (true) {
                 case age < 4: {
                     switch (true) {
@@ -28,13 +27,11 @@ exports.calculateRequirements = function (sex, age, pal, weigth) {
                     }
                 }
                 case age < 7: {
-                    console.log('sprawdzilem wiek i ma mniej niz 7 lata');
                     switch (true) {
                         case pal < 1.75:
                             exports.reqs = new requriments(1400,21,47,130,14);
                             return true;
                         case pal < 2.2:
-                            console.log('dotarlem');
                             exports.reqs = new requriments(1400,21,47,130,14);
                             return true;
                         case pal < 2.5:
