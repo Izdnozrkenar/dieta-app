@@ -17,7 +17,7 @@ var currentSolution = [];
 var bestSolution = [];
 
 exports.generateRandomSolution = function (pool) {
-   
+
    randomTabuEventEmitter.once('dishesID_received', generateFirstSolution)
 
    getDishesByType(pool);
@@ -63,24 +63,24 @@ function getDishesByType(pool) {
 
 function generateFirstSolution() {
    for (var i = 0; i < 30; i++) {
-      var tempBreakfastId = randomNumber.getRandomNumber(0,breakfastIdlist.length-1);
-      var tempLunchId = randomNumber.getRandomNumber(0,lunchIdlist.length-1);
-      var tempDinnerId = randomNumber.getRandomNumber(0,lunchIdlist.length-1);
+      var tempBreakfastId = randomNumber.getRandomNumber(0, breakfastIdlist.length - 1);
+      var tempLunchId = randomNumber.getRandomNumber(0, lunchIdlist.length - 1);
+      var tempDinnerId = randomNumber.getRandomNumber(0, lunchIdlist.length - 1);
 
-      currentSolution.push([tempBreakfastId,null,tempLunchId,null,tempDinnerId]);
-   }  
+      currentSolution.push([tempBreakfastId, null, tempLunchId, null, tempDinnerId]);
+   }
    var firstHash = crypto.createHash('md5').update(currentSolution.join()).digest('hex');
 
-   solutionsTabuList[firstHash]=10;
-   randomTabuSearch(solutionsTabuList(currentSolution));
+   solutionsTabuList[firstHash] = 10;
+   randomTabuSearch(currentSolution);
 }
 
-function randomTabuSearch(solution){
-   for(var i=0; i<1; i++){
+function randomTabuSearch(solution) {
+   for (var i = 0; i < 1; i++) {
 
-      var temp1 = [randomNumber.getRandomNumber(0,4),randomNumber.getRandomNumber(0,29)];
-      var temp1 = [randomNumber.getRandomNumber(0,4),randomNumber.getRandomNumber(0,29)];
-      var temp1 = [randomNumber.getRandomNumber(0,4),randomNumber.getRandomNumber(0,29)];
+      var temp1 = [randomNumber.getRandomNumber(0, 4), randomNumber.getRandomNumber(0, 29)];
+      var temp2 = [randomNumber.getRandomNumber(0, 4), randomNumber.getRandomNumber(0, 29)];
+      var temp3 = [randomNumber.getRandomNumber(0, 4), randomNumber.getRandomNumber(0, 29)];
 
       console.log(temp1);
       console.log(temp2);
