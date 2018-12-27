@@ -1,6 +1,6 @@
 'use strict';
 
-exports.evaluateSolution = function (solution, pool, reqs) {
+module.exports = exports = function (solution, pool, reqs,callback) {
 
     var goalValue = 0;
 
@@ -47,10 +47,9 @@ exports.evaluateSolution = function (solution, pool, reqs) {
         var carbohydratesDemand = Math.abs(((reqs.carbohydrates * 30) - solCarbohydrates) / (reqs.carbohydrates * 30));
         var fiberDemand = Math.abs(((reqs.fiber * 30) - solFiber) / (reqs.fiber * 30));
 
-        console.log('zapotrzebowanie na energie = ' + energyDemand + '\nzapotrzebowanie na bialko = ' + proteinDemand + '\nzapotrzebowanie na tłuszcz = ' + fatDemand + '\nzapotrzebowanie na węglowodany = ' + carbohydratesDemand + '\nzapotrzebowanie na blonnik = ' + fiberDemand);
+        //console.log('zapotrzebowanie na energie = ' + energyDemand + '\nzapotrzebowanie na bialko = ' + proteinDemand + '\nzapotrzebowanie na tłuszcz = ' + fatDemand + '\nzapotrzebowanie na węglowodany = ' + carbohydratesDemand + '\nzapotrzebowanie na blonnik = ' + fiberDemand);
 
         goalValue += w1(energyDemand) + w1(proteinDemand) + w1(fatDemand) + w1(carbohydratesDemand) + w1(fiberDemand);
-        console.log(w1(proteinDemand));
         evaluateMonnotony();
     }
 
@@ -66,9 +65,7 @@ exports.evaluateSolution = function (solution, pool, reqs) {
                 }
             })
         }
-
         goalValue += w2(monotonnyScore);
-
-        return goalValue;
+        callback(goalValue);
     }
 }
