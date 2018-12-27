@@ -18,6 +18,8 @@ var bestSolution = [];
 
 exports.generateRandomSolution = function (pool, conn, reqs) {
 
+   getDishesByType(pool);
+
    randomTabuEventEmitter.once('dishesID_received', () => {
 
       var firstSolution = [];
@@ -44,16 +46,34 @@ exports.generateRandomSolution = function (pool, conn, reqs) {
          var changeIndex2 = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
          var changeIndex3 = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
 
-         var tempSolution1 = solution.slice();
-         tempSolution1[changeIndex1[0]][changeIndex1[1]] = 1000000;
-         tempSolution1[changeIndex2[0]][changeIndex2[1]] = 1000000;
-         tempSolution1[changeIndex3[0]][changeIndex3[1]] = 1000000;
+         var tempSolution = solution.slice();
 
-         var cos = evalualte.evaluateSolution(tempSolution1, pool, reqs);
-
+         switch(true){
+            case changeIndex1[1]==0:{
+               var randomBreakfastId = randomNumber.getRandomNumber(0, breakfastIdlist.length - 1);
+               tempSolution[changeIndex1[0]][changeIndex1[1]] = breakfastIdlist[randomBreakfastId];
+            }
+            case changeIndex1[1]==1:{
+               var randomSecondBreakfastId = randomNumber.getRandomNumber(0, secondBreakfastIdlist.length - 1);
+               tempSolution[changeIndex1[0]][changeIndex1[1]] = secondBreakfastIdlist[randomSecondBreakfastId];
+            }
+            case changeIndex1[1]==2:{
+               var randomLunchId = randomNumber.getRandomNumber(0, lunchIdlist.length - 1);
+               tempSolution[changeIndex1[0]][changeIndex1[1]] = lunchIdlist[randomLunchId];
+            }
+            case changeIndex1[1]==3:{
+               var randomMeriendaId = randomNumber.getRandomNumber(0, meriendaIdlist.length - 1);
+               tempSolution[changeIndex1[0]][changeIndex1[1]] = meriendaIdlist[randomMeriendaId];
+            }
+            case changeIndex1[1]==4:{
+               var randomDinnerId = randomNumber.getRandomNumber(0, dinnerIdlist.length - 1);
+               tempSolution[changeIndex1[0]][changeIndex1[1]] = dinnerIdlist[randomDinnerId];
+            }
+         }
+         var cos = evalualte.evaluateSolution(tempSolution, pool, reqs);
       }
    }
-   getDishesByType(pool);
+   
 }
 
 function getDishesByType(pool) {
