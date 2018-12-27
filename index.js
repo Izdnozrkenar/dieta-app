@@ -9,9 +9,9 @@ var dishList = [];
 const pool = dbConnector.setConnectionToDatabase();
 const conn = dbConnector.setCallbackConnectionToDatabase();
 
-var reqForUser = evaluator.calculateRequirements(2,78,1.9,63);
-console.log(evaluator.reqs);
+evaluator.calculateRequirements(1,78,1.9,63);
+var reqForUser = evaluator.reqs
 
-var rndTS = randomTS.generateRandomSolution(pool,conn);
+var rndTS = randomTS.generateRandomSolution(pool,conn,reqForUser);
 
 dbUpdate.updateDishesDatabase(pool,conn);

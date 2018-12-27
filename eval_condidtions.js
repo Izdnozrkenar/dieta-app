@@ -20,10 +20,13 @@ exports.calculateRequirements = function (sex, age, pal, weigth) {
                     switch (true) {
                         case pal < 1.75:
                             exports.reqs = new requriments(1000,14,31,130,10);
+                            return true;
                         case pal < 2.2:
-                            return new requriments(1000,14,47,130,10);
+                            exports.reqs = new requriments(1000,14,47,130,10);
+                            return true;
                         case pal < 2.5:
-                            return new requriments(1000,14,54,130,10);
+                            exports.reqs = new requriments(1000,14,54,130,10);
+                            return true;
                     }
                 }
                 case age < 7: {
@@ -509,7 +512,7 @@ exports.calculateRequirements = function (sex, age, pal, weigth) {
                                     return true;
                             }
                         }
-                        case pal < 2.01: {
+                        case pal < 1.76: {
                             switch (true) {
                                 case weigth <= 55:
                                     exports.reqs = new requriments(2050,0.9*weigth,68,130,20);
@@ -525,7 +528,7 @@ exports.calculateRequirements = function (sex, age, pal, weigth) {
                                     return true;
                             }
                         }
-                        case pal < 2.21: {
+                        case pal < 2.01: {
                             switch (true) {
                                 case weigth <= 55:
                                     exports.reqs = new requriments(2300,0.9*weigth,77,130,20);
@@ -541,7 +544,7 @@ exports.calculateRequirements = function (sex, age, pal, weigth) {
                                     return true;
                             }
                         };
-                        case pal < 2.41: {
+                        case pal < 2.21: {
                             switch (true) {
                                 case weigth <= 55:
                                     exports.reqs = new requriments(2550,0.9*weigth,85,130,20);
