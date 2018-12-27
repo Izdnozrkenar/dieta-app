@@ -67,7 +67,7 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs) {
 
       var jsonSolution = JSON.stringify(solution);
 
-      for (var i = 0; i < 10; i++) {
+      for (var i = 0; i < 20; i++) {
 
          var tempSolution = JSON.parse(jsonSolution);
 
@@ -102,14 +102,6 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs) {
          }
 
          neighbourhood[i] = tempSolution;
-      }
-      for (var p = 0; p < neighbourhood.length; p++) {
-         if (checkSolutionCredibility(neighbourhood[p])) {
-            evaluate(neighbourhood[p], pool, reqs, (goalVal)=>{
-               moveValues[p] = goalVal;
-               console.log(goalVal);
-            });
-         }
       }
    }
 
