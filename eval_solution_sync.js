@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = exports = function (solution, reqs, dishlist) {
+exports.evaluateSolution = function (solution, reqs, dishlist) {
 
     var goalValue = 0;
 
@@ -19,20 +19,19 @@ module.exports = exports = function (solution, reqs, dishlist) {
     var solCarbohydrates = 0;
     var solFiber = 0;
 
-    var nutrientsQueryFlag = 0;
-
     solution.forEach(dishRow => {
         dishRow.forEach(dish => {
-            solEnergy += dishlist[dish].dshEnergy;
-            solProtein += dishlist[dish].dshProtein;
-            solFat += dishlist[dish].dshFat;
-            solCarbohydrates += dishlist[dish].dshCarbohydrates;
-            solFiber += dishlist[dish].dshFiber;
+            if (dish) {
+                solEnergy += dishlist[dish].dshEnergy;
+                solProtein += dishlist[dish].dshProtein;
+                solFat += dishlist[dish].dshFat;
+                solCarbohydrates += dishlist[dish].dshCarbohydrates;
+                solFiber += dishlist[dish].dshFiber;
+            }
         })
     });
-    calculateNutrients();
 
-    var calculateNutrients = function () {
+    var calculateNutrients= function() {
         var energyDemand = Math.abs(((reqs.energy * 30) - solEnergy) / (reqs.energy * 30));
         var proteinDemand = Math.abs(((reqs.protein * 30) - solProtein) / (reqs.protein * 30));
         var fatDemand = Math.abs(((reqs.fat * 30) - solFat) / (reqs.fat * 30));
@@ -42,8 +41,7 @@ module.exports = exports = function (solution, reqs, dishlist) {
         //console.log('zapotrzebowanie na energie = ' + energyDemand + '\nzapotrzebowanie na bialko = ' + proteinDemand + '\nzapotrzebowanie na tłuszcz = ' + fatDemand + '\nzapotrzebowanie na węglowodany = ' + carbohydratesDemand + '\nzapotrzebowanie na blonnik = ' + fiberDemand);
 
         goalValue += w1(energyDemand) + w1(proteinDemand) + w1(fatDemand) + w1(carbohydratesDemand) + w1(fiberDemand);
-        evaluateMonnotony();
-    }
+    }(true);
 
     var evaluateMonnotony = function () {
 
@@ -59,6 +57,7 @@ module.exports = exports = function (solution, reqs, dishlist) {
         }
 
         goalValue += w2(monotonnyScore);
-        return goalValue;
-    }
+    }(true)
+
+    return goalValue;
 }

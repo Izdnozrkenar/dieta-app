@@ -18,7 +18,7 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
    var dinnerIdlist = [];
 
    var bestSolution = [];
-   var bestSolutionValue = [];
+   var bestSolutionValue = 0;
    var bestSolutionIteration = 0;
 
    var searchIterations = 0;
@@ -60,8 +60,11 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
       var firstHash = crypto.createHash('md5').update(firstSolution.join()).digest('hex');
 
       solutionsTabuList[firstHash] = 10;
-      bestSolution = firstSolution.slice();
-      randomTabuSearch(firstSolution);
+
+      bestSolution = JSON.parse(JSON.stringify(firstSolution));
+      bestSolutionValue = evaluate.evaluateSolution(bestSolution, reqs, dishlist);
+      
+      return randomTabuSearch(firstSolution);
 
    });
    function randomTabuSearch(solution) {
@@ -69,13 +72,17 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
       var neighbourhood = [];
       var moveValues = {};
 
-      var currentSolutionValue;
+      var currentSolutionValue = evaluate.evaluateSolution(solution, reqs, dishlist);
 
       var jsonSolution = JSON.stringify(solution);
+
+      /* generating neighbourhood  */
 
       for (var i = 0; i < 20; i++) {
 
          var tempSolution = JSON.parse(jsonSolution);
+
+         /* generating random choice */
 
          for (var j = 0; j < 3; j++) {
 
@@ -103,64 +110,68 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
                   tempSolution[changeIndex[0]][changeIndex[1]] = dinnerIdlist[randomDinnerId];
                }
             }
-
-
          }
-
          neighbourhood[i] = tempSolution;
       }
 
-      neighbourhood.push(solution);
-      neighbourhood.push(bestSolution);
-      // (function next(p) {
-      //    if (neighbourhood.length === p) {
-      //       bestSolutionValue = moveValues[p - 2];
-      //       currentSolutionValue = moveValues[p - 1];
-      //       moveOperation();
-      //       return
-      //    }
-
-      //    evaluate(neighbourhood[p], pool, reqs, (val) => {
-      //       moveValues[p] = val;
-      //       next(p + 1);
-      //    })
-      // })(0);
-
-      evaluate.evaluateSolution(solution,reqs,dishlist);
-
-      for(var index = 0; index < neighbourhood.length; index++){
-
+      /* evaluate neighbourhood */
+      for (var index = 0; index < neighbourhood.length; index++) {
+         moveValues[index] = evaluate.evaluateSolution(neighbourhood[index], reqs, dishlist);
       }
 
-      function moveOperation() {
+      neighbourhood.push(solution);
 
-         var moveSolutionKey = 21;
-         console.log('iteracja = ' + searchIterations);
+      var moveSolutionKey = 0;
 
-         for (var key in Object.keys(moveValues)) {
-            if (currentSolutionValue > moveValues[key]) {
+      /* choose best move */
+      for (var key in Object.keys(moveValues)) {
+         if (currentSolutionValue >= moveValues[key]) {
+            if(Object.values(solutionsTabuList).indexOf(crypto.createHash('md5').update(neighbourhood[key].join()).digest('hex') == -1  )){
                currentSolutionValue = moveValues[key];
                moveSolutionKey = key;
+            }
+         }
+         if (bestSolutionValue >= currentSolutionValue) {
+            bestSolutionValue = currentSolutionValue;
+            bestSolutionIteration = searchIterations;
+            bestSolution = JSON.parse(JSON.stringify(neighbourhood[key]))  
+         }
+      }
 
-            }
-            if (bestSolutionValue > currentSolutionValue) {
-               bestSolutionValue = currentSolutionValue
-               bestSolutionIteration = i;
+      /* update tabu */
+
+      var currentSolutionHash = crypto.createHash('md5').update(solution.join()).digest('hex');
+
+      solutionsTabuList[currentSolutionHash] = 50;
+
+      for(var tabu in Object.keys(solutionsTabuList)){
+         if(solutionsTabuList[tabu]){
+            solutionsTabuList[tabu] -= 1;
+            if(solutionsTabuList[tabu]==0){
+               delete solutionsTabuList[tabu];
             }
          }
-         if (searchIterations === 100) {
-            console.log('wartosc najlepszego rozwiazania = ' + bestSolutionValue);
-            process.exit();
-         } else {
-            searchIterations++;
-            randomTabuSearch(neighbourhood[moveSolutionKey]);
-         }
+      }
+
+      /* commence move */
+
+      if (searchIterations === 1000) {
+         console.log('wartosc najlepszego rozwiazania = ' + bestSolutionValue);
+         console.log(bestSolutionIteration);
+         process.exit();
+      } else if(searchIterations%1000 == 0) {
+         /* clear stack */
+         searchIterations++;
+         setTimeout(()=>{
+            return randomTabuSearch(neighbourhood[moveSolutionKey]);
+         }, 1);
+      } else {
+         searchIterations++;
+         return randomTabuSearch(neighbourhood[moveSolutionKey]);
       }
    }
 
    function checkSolutionCredibility(solution) {
-
-      var credibility = true;
 
       if (solutionsTabuList.hasOwnProperty(crypto.createHash('md5').update(solution.join()).digest('hex'))) {
          return false;

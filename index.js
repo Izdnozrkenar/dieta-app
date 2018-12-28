@@ -4,23 +4,23 @@ const randomTS = require('./randomTS.js');
 const dbUpdate = require('./databaseStaticUpdate');
 const evaluator = require('./eval_condidtions')
 
-var dishList = [];
+var dishList = {};
 
 const pool = dbConnector.setConnectionToDatabase();
 const conn = dbConnector.setCallbackConnectionToDatabase();
 
-pool.query('SELECT dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFiber FROM dishes')
-.then(res => {
+var requirements = evaluator.calculateRequirements(1, 33, 1.1, 60);
 
-    res.forEach(values => {
-        dishList.push(res);
+
+pool.query('SELECT dshID, dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFiber FROM dishes')
+    .then(res => {
+
+        res.forEach(values => {
+            dishList[values.dshID]=values;
+        })
+
+        var rndTS = randomTS.generateRandomSolution(pool, conn, requirements, [], [], dishList);
     })
-})
+    
 
-
-evaluator.calculateRequirements(1,78,1.9,63);
-var reqForUser = evaluator.reqs
-
-var rndTS = randomTS.generateRandomSolution(pool,conn,reqForUser,[],[],dishList);
-
-dbUpdate.updateDishesDatabase(pool,conn);
+dbUpdate.updateDishesDatabase(pool, conn);
