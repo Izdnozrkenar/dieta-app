@@ -2,11 +2,11 @@
 const events = require('events');
 const randomNumber = require('./randomNumberGenerator');
 const crypto = require('crypto');
-var evaluate = require('./eval_solution');
+var evaluate = require('./eval_solution_sync');
 
 var randomTabuEventEmitter = new events.EventEmitter();
 
-exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs) {
+exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dishlist) {
 
    var solutionsTabuList = {};
    var atributesTabuList = {};
@@ -112,36 +112,43 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs) {
 
       neighbourhood.push(solution);
       neighbourhood.push(bestSolution);
-      (function next(p) {
-         if (neighbourhood.length === p) {
-            bestSolutionValue = moveValues[p - 2];
-            currentSolutionValue = moveValues[p - 1];
-            moveOperation();
-            return
-         }
+      // (function next(p) {
+      //    if (neighbourhood.length === p) {
+      //       bestSolutionValue = moveValues[p - 2];
+      //       currentSolutionValue = moveValues[p - 1];
+      //       moveOperation();
+      //       return
+      //    }
 
-         evaluate(neighbourhood[p], pool, reqs, (val) => {
-            moveValues[p] = val;
-            next(p + 1);
-         })
-      })(0);
+      //    evaluate(neighbourhood[p], pool, reqs, (val) => {
+      //       moveValues[p] = val;
+      //       next(p + 1);
+      //    })
+      // })(0);
+
+      evaluate.evaluateSolution(solution,reqs,dishlist);
+
+      for(var index = 0; index < neighbourhood.length; index++){
+
+      }
 
       function moveOperation() {
 
          var moveSolutionKey = 21;
+         console.log('iteracja = ' + searchIterations);
 
          for (var key in Object.keys(moveValues)) {
-            if (currentSolutionValue < moveValues[key]) {
+            if (currentSolutionValue > moveValues[key]) {
                currentSolutionValue = moveValues[key];
                moveSolutionKey = key;
 
             }
-            if (bestSolutionValue < currentSolutionValue) {
+            if (bestSolutionValue > currentSolutionValue) {
                bestSolutionValue = currentSolutionValue
                bestSolutionIteration = i;
             }
          }
-         if (searchIterations === 10) {
+         if (searchIterations === 100) {
             console.log('wartosc najlepszego rozwiazania = ' + bestSolutionValue);
             process.exit();
          } else {

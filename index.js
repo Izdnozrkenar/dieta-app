@@ -9,9 +9,18 @@ var dishList = [];
 const pool = dbConnector.setConnectionToDatabase();
 const conn = dbConnector.setCallbackConnectionToDatabase();
 
+pool.query('SELECT dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFiber FROM dishes')
+.then(res => {
+
+    res.forEach(values => {
+        dishList.push(res);
+    })
+})
+
+
 evaluator.calculateRequirements(1,78,1.9,63);
 var reqForUser = evaluator.reqs
 
-var rndTS = randomTS.generateRandomSolution(pool,conn,reqForUser,[],[]);
+var rndTS = randomTS.generateRandomSolution(pool,conn,reqForUser,[],[],dishList);
 
 dbUpdate.updateDishesDatabase(pool,conn);
