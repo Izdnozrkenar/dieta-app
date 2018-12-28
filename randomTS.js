@@ -2,7 +2,7 @@
 const events = require('events');
 const randomNumber = require('./randomNumberGenerator');
 const crypto = require('crypto');
-const evaluate = require('./eval_solution');
+var evaluate = require('./eval_solution');
 
 var randomTabuEventEmitter = new events.EventEmitter();
 
@@ -18,6 +18,10 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs) {
    var dinnerIdlist = [];
 
    var bestSolution = [];
+   var bestSolutionValue = [];
+   var bestSolutionIteration = 0;
+
+   var searchIterations = 0;
 
    getDishesByType(pool);
 
@@ -65,13 +69,15 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs) {
       var neighbourhood = [];
       var moveValues = {};
 
+      var currentSolutionValue;
+
       var jsonSolution = JSON.stringify(solution);
 
       for (var i = 0; i < 20; i++) {
 
          var tempSolution = JSON.parse(jsonSolution);
 
-         for(var j = 0; j <3 ; j++){
+         for (var j = 0; j < 3; j++) {
 
             var changeIndex = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
 
@@ -97,11 +103,51 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs) {
                   tempSolution[changeIndex[0]][changeIndex[1]] = dinnerIdlist[randomDinnerId];
                }
             }
-      
+
 
          }
 
          neighbourhood[i] = tempSolution;
+      }
+
+      neighbourhood.push(solution);
+      neighbourhood.push(bestSolution);
+      (function next(p) {
+         if (neighbourhood.length === p) {
+            bestSolutionValue = moveValues[p - 2];
+            currentSolutionValue = moveValues[p - 1];
+            moveOperation();
+            return
+         }
+
+         evaluate(neighbourhood[p], pool, reqs, (val) => {
+            moveValues[p] = val;
+            next(p + 1);
+         })
+      })(0);
+
+      function moveOperation() {
+
+         var moveSolutionKey = 21;
+
+         for (var key in Object.keys(moveValues)) {
+            if (currentSolutionValue < moveValues[key]) {
+               currentSolutionValue = moveValues[key];
+               moveSolutionKey = key;
+
+            }
+            if (bestSolutionValue < currentSolutionValue) {
+               bestSolutionValue = currentSolutionValue
+               bestSolutionIteration = i;
+            }
+         }
+         if (searchIterations === 10) {
+            console.log('wartosc najlepszego rozwiazania = ' + bestSolutionValue);
+            process.exit();
+         } else {
+            searchIterations++;
+            randomTabuSearch(neighbourhood[moveSolutionKey]);
+         }
       }
    }
 
@@ -113,7 +159,7 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs) {
          return false;
       }
       for (var i = 0; i < solution.length; i++) {
-         for (var j = 0; j<solution[i].length; j++) {
+         for (var j = 0; j < solution[i].length; j++) {
             if (atributesTabuList.hasOwnProperty(solution[i][j])) {
                return false;
             }

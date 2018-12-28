@@ -1,6 +1,6 @@
 'use strict';
 
-exports.evaluateSolution = function (solution, pool, reqs) {
+module.exports = exports = function (solution, pool, reqs, callback) {
 
     var goalValue = 0;
 
@@ -67,6 +67,6 @@ exports.evaluateSolution = function (solution, pool, reqs) {
         }
 
         goalValue += w2(monotonnyScore);
-        exports.goal = goalValue;
+        callback(goalValue);
     }
 }
