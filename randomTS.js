@@ -62,7 +62,7 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
       solutionsTabuList[firstHash] = 10;
 
       bestSolution = JSON.parse(JSON.stringify(firstSolution));
-      bestSolutionValue = evaluate.evaluateSolution(bestSolution, reqs, dishlist);
+      bestSolutionValue = evaluate.evaluateSolution(bestSolution, reqs, prefs, dishlist);
       
       return randomTabuSearch(firstSolution);
 
@@ -72,13 +72,13 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
       var neighbourhood = [];
       var moveValues = {};
 
-      var currentSolutionValue = evaluate.evaluateSolution(solution, reqs, dishlist);
+      var currentSolutionValue = evaluate.evaluateSolution(solution, reqs, prefs,dishlist);
 
       var jsonSolution = JSON.stringify(solution);
 
       /* generating neighbourhood  */
 
-      for (var i = 0; i < 20; i++) {
+      for (var i = 0; i < 30; i++) {
 
          var tempSolution = JSON.parse(jsonSolution);
 
@@ -116,7 +116,7 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
 
       /* evaluate neighbourhood */
       for (var index = 0; index < neighbourhood.length; index++) {
-         moveValues[index] = evaluate.evaluateSolution(neighbourhood[index], reqs, dishlist);
+         moveValues[index] = evaluate.evaluateSolution(neighbourhood[index], reqs, prefs, dishlist);
       }
 
       neighbourhood.push(solution);

@@ -9,6 +9,8 @@ var dishList = {};
 const pool = dbConnector.setConnectionToDatabase();
 const conn = dbConnector.setCallbackConnectionToDatabase();
 
+var preferences = {}
+
 var requirements = evaluator.calculateRequirements(1, 33, 1.1, 60);
 
 
@@ -17,9 +19,10 @@ pool.query('SELECT dshID, dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFi
 
         res.forEach(values => {
             dishList[values.dshID]=values;
+            preferences[values.dshID] = 0;
         })
 
-        var rndTS = randomTS.generateRandomSolution(pool, conn, requirements, [], [], dishList);
+        var rndTS = randomTS.generateRandomSolution(pool, conn, requirements, [], preferences, dishList);
     })
     
 

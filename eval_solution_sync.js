@@ -1,6 +1,6 @@
 'use strict';
 
-exports.evaluateSolution = function (solution, reqs, dishlist) {
+exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
 
     var goalValue = 0;
 
@@ -10,8 +10,12 @@ exports.evaluateSolution = function (solution, reqs, dishlist) {
     var w2 = function (val) {
         return 5 * val;
     }
+    var w3 = function (val){
+        return 10 * val;
+    }
 
     var monotonnyScore = 0;
+    var prefScore = 0;
 
     var solEnergy = 0;
     var solProtein = 0;
@@ -57,6 +61,24 @@ exports.evaluateSolution = function (solution, reqs, dishlist) {
         }
 
         goalValue += w2(monotonnyScore);
+    }(true)
+
+    var evaluatePreferences = function (){
+        solution.forEach(dishRow => {
+            dishRow.forEach(dish => {
+                switch (preferences[dish] || preferences[dish]==0){
+                    case preferences[dish] == 0:{
+                        prefScore += 1;
+                        break;
+                    }
+                    case preferences[dish] == -1:{
+                        prefScore += 5;
+                        break;
+                    }
+                }
+            })
+        });
+        goalValue += w3(prefScore);
     }(true)
 
     return goalValue;
