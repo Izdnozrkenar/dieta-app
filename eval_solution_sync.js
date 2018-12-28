@@ -11,7 +11,7 @@ exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
         return 5 * val;
     }
     var w3 = function (val){
-        return 10 * val;
+        return 20 * val;
     }
 
     var monotonnyScore = 0;
