@@ -145,7 +145,7 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
       /* choose best move */
       for (var key in Object.keys(moveValues)) {
          if (currentSolutionValue >= moveValues[key]) {
-            if (Object.values(solutionsTabuList).indexOf(crypto.createHash('md5').update(neighbourhood[key].join()).digest('hex') == -1)) {
+            if (checkSolutionCredibility(neighbourhood[key])) {
                currentSolutionValue = moveValues[key];
                moveSolutionKey = key
             }
@@ -163,7 +163,7 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
 
       solutionsTabuList[currentSolutionHash] = 50;
 
-      for (var tabu in Object.keys(solutionsTabuList)) {
+      for (var tabu in solutionsTabuList) {
          if (solutionsTabuList[tabu]) {
             solutionsTabuList[tabu] -= 1;
             if (solutionsTabuList[tabu] == 0) {
