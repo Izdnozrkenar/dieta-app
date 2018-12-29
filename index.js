@@ -22,7 +22,7 @@ pool.query('SELECT dshID, dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFi
             preferences[values.dshID] = 0;
         })
 
-        var rndTS = randomTS.generateRandomSolution(pool, conn, requirements, [], preferences, dishList);
+        var rndTS = randomTS.generateRandomSolution(pool, conn, requirements, [], preferences, dishList,1000,30,10);
     })
     
 

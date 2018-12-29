@@ -6,7 +6,7 @@ var evaluate = require('./eval_solution_sync');
 
 var randomTabuEventEmitter = new events.EventEmitter();
 
-exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dishlist) {
+exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dishlist, maxIterations, pmaxAddDropMoves, pmaxSwapMoves) {
 
    var solutionsTabuList = {};
    var atributesTabuList = {};
@@ -23,22 +23,12 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
 
    var searchIterations = 0;
 
+   var totalSwapActionCount = 0;
+   var totalAddDropActionCount = 0;
+
    getDishesByType(pool);
 
-   randomTabuEventEmitter.on('dishesID_received', () => {
-
-      pool.query('SELECT dishes.dshID, allergens.alrID FROM dishes JOIN products_dishes_xref,products,products_allergens_xref, allergens WHERE products_dishes_xref.dshID = dishes.dshID AND products.prdID = products_dishes_xref.prdID AND products.prdID = products_allergens_xref.prdID  AND allergens.alrID = products_allergens_xref.alrID ')
-         .then(res => {
-            res.forEach(allergen => {
-               if (allrgs.includes(allergen.alrID) && !atributesTabuList.hasOwnProperty(allergen.alrID)) {
-                  atributesTabuList[allergen.dshID] = null;
-               }
-            });
-            randomTabuEventEmitter.emit('allergens_received');
-         })
-   })
-
-   randomTabuEventEmitter.on('allergens_received', () => {
+   randomTabuEventEmitter.on('allergens_received', function getFirstSolution() {
 
       var firstSolution = [];
 
@@ -63,22 +53,23 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
 
       bestSolution = JSON.parse(JSON.stringify(firstSolution));
       bestSolutionValue = evaluate.evaluateSolution(bestSolution, reqs, prefs, dishlist);
-      
-      return randomTabuSearch(firstSolution);
+
+      return randomTabuSearch(firstSolution,pmaxAddDropMoves,pmaxSwapMoves);
 
    });
-   function randomTabuSearch(solution) {
+
+   function randomTabuSearch(solution, maxAddDropMoves, maxSwapMoves) {
 
       var neighbourhood = [];
       var moveValues = {};
 
-      var currentSolutionValue = evaluate.evaluateSolution(solution, reqs, prefs,dishlist);
+      var currentSolutionValue = evaluate.evaluateSolution(solution, reqs, prefs, dishlist);
 
       var jsonSolution = JSON.stringify(solution);
 
-      /* generating neighbourhood  */
+      /* generating neighbourhood of drop/add moves  */
 
-      for (var i = 0; i < 30; i++) {
+      for (var i = 0; i < maxAddDropMoves; i++) {
 
          var tempSolution = JSON.parse(jsonSolution);
 
@@ -86,39 +77,67 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
 
          for (var j = 0; j < 3; j++) {
 
-            var changeIndex = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
+            var addDropChangeIndex = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
 
             switch (true) {
-               case changeIndex[1] == 0: {
+               case addDropChangeIndex[1] == 0: {
                   var randomBreakfastId = randomNumber.getRandomNumber(0, breakfastIdlist.length - 1);
-                  tempSolution[changeIndex[0]][changeIndex[1]] = breakfastIdlist[randomBreakfastId];
+                  tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = breakfastIdlist[randomBreakfastId];
                }
-               case changeIndex[1] == 1: {
+               case addDropChangeIndex[1] == 1: {
                   var randomSecondBreakfastId = randomNumber.getRandomNumber(0, secondBreakfastIdlist.length - 1);
-                  tempSolution[changeIndex[0]][changeIndex[1]] = secondBreakfastIdlist[randomSecondBreakfastId];
+                  tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = secondBreakfastIdlist[randomSecondBreakfastId];
                }
-               case changeIndex[1] == 2: {
+               case addDropChangeIndex[1] == 2: {
                   var randomLunchId = randomNumber.getRandomNumber(0, lunchIdlist.length - 1);
-                  tempSolution[changeIndex[0]][changeIndex[1]] = lunchIdlist[randomLunchId];
+                  tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = lunchIdlist[randomLunchId];
                }
-               case changeIndex[1] == 3: {
+               case addDropChangeIndex[1] == 3: {
                   var randomMeriendaId = randomNumber.getRandomNumber(0, meriendaIdlist.length - 1);
-                  tempSolution[changeIndex[0]][changeIndex[1]] = meriendaIdlist[randomMeriendaId];
+                  tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = meriendaIdlist[randomMeriendaId];
                }
-               case changeIndex[1] == 4: {
+               case addDropChangeIndex[1] == 4: {
                   var randomDinnerId = randomNumber.getRandomNumber(0, dinnerIdlist.length - 1);
-                  tempSolution[changeIndex[0]][changeIndex[1]] = dinnerIdlist[randomDinnerId];
+                  tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = dinnerIdlist[randomDinnerId];
                }
             }
          }
          neighbourhood[i] = tempSolution;
       }
 
+      /* generating neighbourhood of swap moves  */
+
+      for (var i = maxAddDropMoves; i < (maxAddDropMoves + maxSwapMoves); i++) {
+
+         var tempSolution = JSON.parse(jsonSolution);
+
+         var swapChangeIndexFrom = [];
+         var swapChangeIndexTo = [];
+
+         for (var q = 0; q < 3; q++) {
+
+            swapChangeIndexFrom[q] = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
+
+            swapChangeIndexTo[q] = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
+         }
+
+         for (var k = 0; k < swapChangeIndexFrom.length; k++) {
+            var swappedDish = tempSolution[swapChangeIndexFrom[k][0]][swapChangeIndexFrom[k][1]];
+            tempSolution[swapChangeIndexFrom[k][0]][swapChangeIndexFrom[k][1]] = tempSolution[swapChangeIndexTo[k][0]][swapChangeIndexTo[k][1]];
+            tempSolution[swapChangeIndexTo[k][0]][swapChangeIndexTo[k][1]] = swappedDish;
+         }
+
+         neighbourhood[i] = tempSolution;
+      }
+
       /* evaluate neighbourhood */
+
       for (var index = 0; index < neighbourhood.length; index++) {
          moveValues[index] = evaluate.evaluateSolution(neighbourhood[index], reqs, prefs, dishlist);
       }
 
+      /* adding  current colution to neighbourhood */
+      
       neighbourhood.push(solution);
 
       var moveSolutionKey = 0;
@@ -126,15 +145,15 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
       /* choose best move */
       for (var key in Object.keys(moveValues)) {
          if (currentSolutionValue >= moveValues[key]) {
-            if(Object.values(solutionsTabuList).indexOf(crypto.createHash('md5').update(neighbourhood[key].join()).digest('hex') == -1  )){
+            if (Object.values(solutionsTabuList).indexOf(crypto.createHash('md5').update(neighbourhood[key].join()).digest('hex') == -1)) {
                currentSolutionValue = moveValues[key];
-               moveSolutionKey = key;
+               moveSolutionKey = key
             }
          }
-         if (bestSolutionValue >= currentSolutionValue) {
+         if (bestSolutionValue > currentSolutionValue) {
             bestSolutionValue = currentSolutionValue;
             bestSolutionIteration = searchIterations;
-            bestSolution = JSON.parse(JSON.stringify(neighbourhood[key]))  
+            bestSolution = JSON.parse(JSON.stringify(neighbourhood[key]))
          }
       }
 
@@ -144,10 +163,10 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
 
       solutionsTabuList[currentSolutionHash] = 50;
 
-      for(var tabu in Object.keys(solutionsTabuList)){
-         if(solutionsTabuList[tabu]){
+      for (var tabu in Object.keys(solutionsTabuList)) {
+         if (solutionsTabuList[tabu]) {
             solutionsTabuList[tabu] -= 1;
-            if(solutionsTabuList[tabu]==0){
+            if (solutionsTabuList[tabu] == 0) {
                delete solutionsTabuList[tabu];
             }
          }
@@ -155,19 +174,29 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
 
       /* commence move */
 
-      if (searchIterations === 1000) {
+      if (searchIterations === maxIterations) {
+         
          console.log('wartosc najlepszego rozwiazania = ' + bestSolutionValue);
          console.log(bestSolutionIteration);
+         console.log(totalSwapActionCount + ' operacji swapow');
+         console.log(totalAddDropActionCount + ' operacji add/drop');
          process.exit();
-      } else if(searchIterations%1000 == 0) {
+
+      } else if (searchIterations % 1000 == 0) {
+         
          /* clear stack */
+
          searchIterations++;
-         setTimeout(()=>{
-            return randomTabuSearch(neighbourhood[moveSolutionKey]);
+         setTimeout(() => {
+            return randomTabuSearch(neighbourhood[moveSolutionKey],pmaxAddDropMoves,pmaxSwapMoves);
          }, 1);
+
       } else {
+         
+         (moveSolutionKey>maxAddDropMoves && moveSolutionKey!=(maxAddDropMoves + maxSwapMoves + 1)) ? totalSwapActionCount++ : totalAddDropActionCount++;
          searchIterations++;
-         return randomTabuSearch(neighbourhood[moveSolutionKey]);
+         return randomTabuSearch(neighbourhood[moveSolutionKey],pmaxAddDropMoves,pmaxSwapMoves);
+         
       }
    }
 
@@ -224,5 +253,18 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
             randomTabuEventEmitter.emit('dishesID_received');
          })
    }
+
+   randomTabuEventEmitter.on('dishesID_received', () => {
+
+      pool.query('SELECT dishes.dshID, allergens.alrID FROM dishes JOIN products_dishes_xref,products,products_allergens_xref, allergens WHERE products_dishes_xref.dshID = dishes.dshID AND products.prdID = products_dishes_xref.prdID AND products.prdID = products_allergens_xref.prdID  AND allergens.alrID = products_allergens_xref.alrID ')
+         .then(res => {
+            res.forEach(allergen => {
+               if (allrgs.includes(allergen.alrID) && !atributesTabuList.hasOwnProperty(allergen.alrID)) {
+                  atributesTabuList[allergen.dshID] = null;
+               }
+            });
+            randomTabuEventEmitter.emit('allergens_received');
+         })
+   })
 
 }
