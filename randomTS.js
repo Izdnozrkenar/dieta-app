@@ -54,7 +54,7 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
       bestSolution = JSON.parse(JSON.stringify(firstSolution));
       bestSolutionValue = evaluate.evaluateSolution(bestSolution, reqs, prefs, dishlist);
 
-      return randomTabuSearch(firstSolution,pmaxAddDropMoves,pmaxSwapMoves);
+      return randomTabuSearch(firstSolution, pmaxAddDropMoves, pmaxSwapMoves);
 
    });
 
@@ -137,7 +137,7 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
       }
 
       /* adding  current colution to neighbourhood */
-      
+
       neighbourhood.push(solution);
 
       var moveSolutionKey = 0;
@@ -175,28 +175,27 @@ exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dish
       /* commence move */
 
       if (searchIterations === maxIterations) {
-         
+
          console.log('wartosc najlepszego rozwiazania = ' + bestSolutionValue);
          console.log(bestSolutionIteration);
          console.log(totalSwapActionCount + ' operacji swapow');
          console.log(totalAddDropActionCount + ' operacji add/drop');
-         process.exit();
 
       } else if (searchIterations % 1000 == 0) {
-         
+
          /* clear stack */
 
          searchIterations++;
          setTimeout(() => {
-            return randomTabuSearch(neighbourhood[moveSolutionKey],pmaxAddDropMoves,pmaxSwapMoves);
+            return randomTabuSearch(neighbourhood[moveSolutionKey], pmaxAddDropMoves, pmaxSwapMoves);
          }, 1);
 
       } else {
-         
-         (moveSolutionKey>maxAddDropMoves && moveSolutionKey!=(maxAddDropMoves + maxSwapMoves + 1)) ? totalSwapActionCount++ : totalAddDropActionCount++;
+
+         (moveSolutionKey > maxAddDropMoves && moveSolutionKey != (maxAddDropMoves + maxSwapMoves + 1)) ? totalSwapActionCount++ : totalAddDropActionCount++;
          searchIterations++;
-         return randomTabuSearch(neighbourhood[moveSolutionKey],pmaxAddDropMoves,pmaxSwapMoves);
-         
+         return randomTabuSearch(neighbourhood[moveSolutionKey], pmaxAddDropMoves, pmaxSwapMoves);
+
       }
    }
 
