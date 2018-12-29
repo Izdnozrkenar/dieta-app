@@ -6,7 +6,7 @@ var evaluate = require('./eval_solution_sync');
 
 var randomTabuEventEmitter = new events.EventEmitter();
 
-exports.generateRandomSolution = function (pool, conn, reqs, allrgs, prefs, dishlist, maxIterations, pmaxAddDropMoves, pmaxSwapMoves) {
+exports.generateRandomSolution = function (pool, reqs, allrgs, prefs, dishlist, maxIterations, pmaxAddDropMoves, pmaxSwapMoves) {
 
    var solutionsTabuList = {};
    var atributesTabuList = {};
