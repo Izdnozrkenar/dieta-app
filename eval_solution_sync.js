@@ -66,7 +66,7 @@ exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
     var evaluatePreferences = function (){
         solution.forEach(dishRow => {
             dishRow.forEach(dish => {
-                switch (preferences[dish] || preferences[dish]==0){
+                switch (dish){
                     case preferences[dish] == 0:{
                         prefScore += 1;
                         break;

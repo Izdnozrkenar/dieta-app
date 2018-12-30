@@ -61,9 +61,9 @@ exports.getFlagsForSoltuion = function (solution, reqs, preferences, dishlist) {
 
     var setMonnotonyFlags = function () {
 
-        for (var i = 0; i < 30; i++) {
+        for (var i = 0; i < solution.length; i++) {
             solution[i].forEach(dish => {
-                for (var j = i + 1; j < (i + 4) && j < 30; j++) {
+                for (var j = i + 1; j < (i + 4) && j < solution.length; j++) {
                     if (solution[j].includes(dish) && dish !== null) {
                         monotonnyScore++;
                         break;
@@ -78,7 +78,7 @@ exports.getFlagsForSoltuion = function (solution, reqs, preferences, dishlist) {
     var setPreferencesFlags = function () {
         solution.forEach(dishRow => {
             dishRow.forEach(dish => {
-                switch (preferences[dish] || preferences[dish] == 0) {
+                switch (dish) {
                     case preferences[dish] == -1: {
                         prefScore += 5;
                         flagset.hasNonPrefferedDishes = true;

@@ -4,6 +4,7 @@ const randomNumber = require('./randomNumberGenerator');
 const crypto = require('crypto');
 var evaluate = require('./eval_solution_sync');
 var evaluateFlags = require('./eval_flags');
+var possibleMovesByFlags = require('./flaggedTS_possible_moves')
 
 var flaggedTabuEventEmitter = new events.EventEmitter();
 
@@ -12,23 +13,26 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
     var solutionsTabuList = {};
     var atributesTabuList = {};
 
-    var breakfastIdlist = [];
-    var secondBreakfastIdlist = [];
-    var lunchIdlist = [];
-    var meriendaIdlist = [];
-    var dinnerIdlist = [];
+    var dishSet = {
+        breakfasts: [],
+        secondBreakfasts: [],
+        lunches: [],
+        meriendas: [],
+        dinners: []
+    };
 
-
-    var dishesRichinEnergy = [];
-    var dishesNotRichinEnergy = [];
-    var dishesRichinProtein = [];
-    var dishesNotRichinProtein = [];
-    var dishesRichinFat = [];
-    var dishesNotRichinFat = [];
-    var dishesRichinCarbohydrates = [];
-    var dishesNotRichinCarbohydrates = [];
-    var dishesRichinFiber = [];
-    var dishesNotRichinFiber = [];
+    var flaggedDishesSet = {
+        richInEnergy: [],
+        notRichInEnergy: [],
+        richInProtein: [],
+        notRichInProtein: [],
+        richInFat: [],
+        notRichInFat: [],
+        richInCarbohydrates: [],
+        notRichInCarbohydrates: [],
+        richInFiber: [],
+        notRichInFiber: []
+    }
 
     var bestSolution = [];
     var bestSolutionValue = 0;
@@ -47,18 +51,18 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
 
         for (var i = 0; i < 30; i++) {
             do {
-                var tempBreakfastId = randomNumber.getRandomNumber(0, breakfastIdlist.length - 1);
+                var tempBreakfastId = randomNumber.getRandomNumber(0, dishSet['breakfasts'].length - 1);
             } while (atributesTabuList.hasOwnProperty(tempBreakfastId))
 
             do {
-                var tempLunchId = randomNumber.getRandomNumber(0, lunchIdlist.length - 1);
+                var tempLunchId = randomNumber.getRandomNumber(0, dishSet['lunches'].length - 1);
             } while (atributesTabuList.hasOwnProperty(tempLunchId))
 
             do {
-                var tempDinnerId = randomNumber.getRandomNumber(0, lunchIdlist.length - 1);
+                var tempDinnerId = randomNumber.getRandomNumber(0, dishSet['dinners'].length - 1);
             } while (atributesTabuList.hasOwnProperty(tempDinnerId))
 
-            firstSolution.push([breakfastIdlist[tempBreakfastId], null, lunchIdlist[tempLunchId], null, dinnerIdlist[tempDinnerId]]);
+            firstSolution.push([dishSet['breakfasts'][tempBreakfastId], null, dishSet['lunches'][tempLunchId], null, dishSet['dinners'][tempDinnerId]]);
         }
         var firstHash = crypto.createHash('md5').update(firstSolution.join()).digest('hex');
 
@@ -77,75 +81,19 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
         var moveValues = {};
 
         var currentSolutionValue = evaluate.evaluateSolution(solution, reqs, prefs, dishlist);
-
+        var flagset = evaluateFlags.getFlagsForSoltuion(solution, reqs, prefs, dishlist);
+        var possibleMoves = possibleMovesByFlags.getPossbieMovesForFlags(solution, flagset, dishSet, flaggedDishesSet, prefs);
         var jsonSolution = JSON.stringify(solution);
 
-        /* generating neighbourhood of drop/add moves  */
+        /* prepare movement */
 
-        for (var i = 0; i < maxAddDropMoves; i++) {
+        for(var p = 0; p < possibleMoves.length ; p++){
 
-            var tempSolution = JSON.parse(jsonSolution);
-
-            /* generating random choice */
-
-            var flagSet = evaluateFlags.getFlagsForSoltuion(neighbourhood[moveSolutionKey],reqs,prefs,dishlist);
-
-            
-
-
-            for (var j = 0; j < 3; j++) {
-
-                var addDropChangeIndex = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
-
-                switch (true) {
-                    case addDropChangeIndex[1] == 0: {
-                        var randomBreakfastId = randomNumber.getRandomNumber(0, breakfastIdlist.length - 1);
-                        tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = breakfastIdlist[randomBreakfastId];
-                    }
-                    case addDropChangeIndex[1] == 1: {
-                        var randomSecondBreakfastId = randomNumber.getRandomNumber(0, secondBreakfastIdlist.length - 1);
-                        tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = secondBreakfastIdlist[randomSecondBreakfastId];
-                    }
-                    case addDropChangeIndex[1] == 2: {
-                        var randomLunchId = randomNumber.getRandomNumber(0, lunchIdlist.length - 1);
-                        tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = lunchIdlist[randomLunchId];
-                    }
-                    case addDropChangeIndex[1] == 3: {
-                        var randomMeriendaId = randomNumber.getRandomNumber(0, meriendaIdlist.length - 1);
-                        tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = meriendaIdlist[randomMeriendaId];
-                    }
-                    case addDropChangeIndex[1] == 4: {
-                        var randomDinnerId = randomNumber.getRandomNumber(0, dinnerIdlist.length - 1);
-                        tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = dinnerIdlist[randomDinnerId];
-                    }
-                }
+            var tempSolution = JSON.parse(JSON.stringify(solution));
+            tempSolution[possibleMoves[1][2]] = possibleMoves[0]
+            if(checkSolutionCredibility(tempSolution)){
+                neighbourhood.push(tempSolution);
             }
-            neighbourhood[i] = tempSolution;
-        }
-
-        /* generating neighbourhood of swap moves  */
-
-        for (var i = maxAddDropMoves; i < (maxAddDropMoves + maxSwapMoves); i++) {
-
-            var tempSolution = JSON.parse(jsonSolution);
-
-            var swapChangeIndexFrom = [];
-            var swapChangeIndexTo = [];
-
-            for (var q = 0; q < 3; q++) {
-
-                swapChangeIndexFrom[q] = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
-
-                swapChangeIndexTo[q] = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
-            }
-
-            for (var k = 0; k < swapChangeIndexFrom.length; k++) {
-                var swappedDish = tempSolution[swapChangeIndexFrom[k][0]][swapChangeIndexFrom[k][1]];
-                tempSolution[swapChangeIndexFrom[k][0]][swapChangeIndexFrom[k][1]] = tempSolution[swapChangeIndexTo[k][0]][swapChangeIndexTo[k][1]];
-                tempSolution[swapChangeIndexTo[k][0]][swapChangeIndexTo[k][1]] = swappedDish;
-            }
-
-            neighbourhood[i] = tempSolution;
         }
 
         /* evaluate neighbourhood */
@@ -159,7 +107,7 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
         neighbourhood.push(solution);
 
         var moveSolutionKey = 0;
-        
+
         /* choose best move */
         for (var key in Object.keys(moveValues)) {
             if (currentSolutionValue >= moveValues[key]) {
@@ -234,44 +182,44 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
 
 
     function getDishesByType(pool) {
-        pool.query('SELECT dshID,dshType FROM dishes WHERE dshType >= 10000')
+        pool.query('SELECT dshID FROM dishes WHERE dshType >= 10000')
             .then(res => {
                 res.forEach(element => {
-                    breakfastIdlist.push(element.dshID);
+                    dishSet['breakfasts'].push(element.dshID);
                 });
             })
 
         pool.query('SELECT dshID FROM dishes WHERE ((dshType/1000)>=1 AND (FLOOR((dshType/1000))%2=1))')
             .then(res => {
                 res.forEach(element => {
-                    secondBreakfastIdlist.push(element.dshID);
+                    dishSet['secondBreakfasts'].push(element.dshID);
                 });
             })
 
         pool.query('SELECT dshID FROM dishes WHERE ((dshType/100)>=1 AND (FLOOR((dshType/100))%2=1))')
             .then(res => {
                 res.forEach(element => {
-                    lunchIdlist.push(element.dshID);
+                    dishSet['lunches'].push(element.dshID);
                 });
             })
 
         pool.query('SELECT dshID FROM dishes WHERE ((dshType/10)>=1 AND (FLOOR((dshType/10))%2=1))')
             .then(res => {
                 res.forEach(element => {
-                    meriendaIdlist.push(element.dshID);
+                    dishSet['meriendas'].push(element.dshID);
                 });
             })
 
         pool.query('SELECT dshID FROM dishes WHERE ((dshType/1)>=1 AND (FLOOR((dshType))%2=1))')
             .then(res => {
                 res.forEach(element => {
-                    dinnerIdlist.push(element.dshID);
+                    dishSet['dinners'].push(element.dshID);
                 });
-                flaggedTabuEventEmitter.emit('dishesID_received');
+                flaggedTabuEventEmitter.emit('dishesTypes_sorted');
             })
     }
 
-    flaggedTabuEventEmitter.on('dishesID_received', () => {
+    flaggedTabuEventEmitter.on('dishesTypes_sorted', () => {
 
         pool.query('SELECT dishes.dshID, allergens.alrID FROM dishes JOIN products_dishes_xref,products,products_allergens_xref, allergens WHERE products_dishes_xref.dshID = dishes.dshID AND products.prdID = products_dishes_xref.prdID AND products.prdID = products_allergens_xref.prdID  AND allergens.alrID = products_allergens_xref.alrID ')
             .then(res => {
@@ -280,20 +228,7 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
                         atributesTabuList[allergen.dshID] = null;
                     }
                 });
-                flaggedTabuEventEmitter.emit('allergens_received');
-            })
-    })
-
-    flaggedTabuEventEmitter.on('allergens_received', () => {
-
-        pool.query('SELECT dishes.dshID, allergens.alrID FROM dishes JOIN products_dishes_xref,products,products_allergens_xref, allergens WHERE products_dishes_xref.dshID = dishes.dshID AND products.prdID = products_dishes_xref.prdID AND products.prdID = products_allergens_xref.prdID  AND allergens.alrID = products_allergens_xref.alrID ')
-            .then(res => {
-                res.forEach(allergen => {
-                    if (allrgs.includes(allergen.alrID) && !atributesTabuList.hasOwnProperty(allergen.alrID)) {
-                        atributesTabuList[allergen.dshID] = null;
-                    }
-                });
-                flaggedTabuEventEmitter.emit('dishes_sorted_by_flag');
+                flaggedTabuEventEmitter.emit('dishesID_received');
             })
     })
 
@@ -302,63 +237,64 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
         pool.query('SELECT dshID FROM dishes ORDER BY dshEnergy DESC LIMIT 10')
             .then(res => {
                 res.forEach(dish => {
-                    dishesRichinEnergy.push(dish);
+                    flaggedDishesSet['richInEnergy'].push(dish.dshID);
                 })
             })
+
 
         pool.query('SELECT dshID FROM dishes ORDER BY dshEnergy ASC LIMIT 10')
             .then(res => {
                 res.forEach(dish => {
-                    dishesNotRichinEnergy.push(dish);
+                    flaggedDishesSet['notRichInEnergy'].push(dish.dshID);
                 })
             })
 
         pool.query('SELECT dshID FROM dishes ORDER BY dshProtein DESC LIMIT 10')
             .then(res => {
                 res.forEach(dish => {
-                    dishesRichinProtein.push(dish);
+                    flaggedDishesSet['richInProtein'].push(dish.dshID);
                 })
             })
         pool.query('SELECT dshID FROM dishes ORDER BY dshProtein ASC LIMIT 10')
             .then(res => {
                 res.forEach(dish => {
-                    dishesNotRichinProtein.push(dish);
+                    flaggedDishesSet['notRichInProtein'].push(dish.dshID);
                 })
             })
         pool.query('SELECT dshID FROM dishes ORDER BY dshFat DESC LIMIT 10')
             .then(res => {
                 res.forEach(dish => {
-                    dishesRichinFat.push(dish);
+                    flaggedDishesSet['richInFat'].push(dish.dshID);
                 })
             })
         pool.query('SELECT dshID FROM dishes ORDER BY dshFat ASC LIMIT 10')
             .then(res => {
                 res.forEach(dish => {
-                    dishesNotRichinFat.push(dish);
+                    flaggedDishesSet['notRichInFat'].push(dish.dshID);
                 })
             })
         pool.query('SELECT dshID FROM dishes ORDER BY dshCarbohydrates DESC LIMIT 10')
             .then(res => {
                 res.forEach(dish => {
-                    dishesRichinCarbohydrates.push(dish);
+                    flaggedDishesSet['richInCarbohydrates'].push(dish.dshID);
                 })
             })
         pool.query('SELECT dshID FROM dishes ORDER BY dshCarbohydrates ASC LIMIT 10')
             .then(res => {
                 res.forEach(dish => {
-                    dishesNotRichinCarbohydrates.push(dish);
+                    flaggedDishesSet['notRichInCarbohydrates'].push(dish.dshID);
                 })
             })
         pool.query('SELECT dshID FROM dishes ORDER BY dshFiber DESC LIMIT 10')
             .then(res => {
                 res.forEach(dish => {
-                    dishesRichinFiber.push(dish);
+                    flaggedDishesSet['richInFiber'].push(dish.dshID);
                 })
             })
         pool.query('SELECT dshID FROM dishes ORDER BY dshFiber ASC LIMIT 10')
             .then(res => {
                 res.forEach(dish => {
-                    dishesNotRichinFiber.push(dish);
+                    flaggedDishesSet['notRichInFiber'].push(dish.dshID);
                 })
                 flaggedTabuEventEmitter.emit('dish_sorting_complete')
             })
