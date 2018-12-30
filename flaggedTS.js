@@ -96,6 +96,29 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
             }
         }
 
+        for (var i = 0; i < 10; i++) {
+  
+            var tempSolution = JSON.parse(jsonSolution);
+   
+            var swapChangeIndexFrom = [];
+            var swapChangeIndexTo = [];
+   
+            for (var q = 0; q < 3; q++) {
+   
+               swapChangeIndexFrom[q] = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
+   
+               swapChangeIndexTo[q] = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
+            }
+   
+            for (var k = 0; k < swapChangeIndexFrom.length; k++) {
+               var swappedDish = tempSolution[swapChangeIndexFrom[k][0]][swapChangeIndexFrom[k][1]];
+               tempSolution[swapChangeIndexFrom[k][0]][swapChangeIndexFrom[k][1]] = tempSolution[swapChangeIndexTo[k][0]][swapChangeIndexTo[k][1]];
+               tempSolution[swapChangeIndexTo[k][0]][swapChangeIndexTo[k][1]] = swappedDish;
+            }
+   
+            neighbourhood.push(tempSolution);
+         }
+
         /* evaluate neighbourhood */
 
         for (var index = 0; index < neighbourhood.length; index++) {
