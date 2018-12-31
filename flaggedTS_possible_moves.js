@@ -62,7 +62,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
             }
         }
     }
-
+    /*
     if (flagset.needsLessEnergy) {
 
         for(var i = 0; i < flaggedDishlists['notRichInEnergy'].length; i++){
@@ -625,6 +625,6 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
             }
         }
     }
-
+    */
     return possibleMoves;
 }

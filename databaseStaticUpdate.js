@@ -25,8 +25,6 @@ exports.updateDishesDatabase = function (pool, conn) {
         });
     }
 
-    
-
     function updateNutrientsInDatabase() {
         dishList.forEach(dish => {
             pool.query('UPDATE dishes SET dshEnergy=' + dish.totalEnergyAmount + ', dshProtein=' + dish.totalProteinAmount + ', dshFat=' + dish.totalFatAmount + ', dshCarbohydrates=' + dish.totalCarbohydratesAmount + ', dshFiber=' + dish.totalFiberAmount + ' WHERE dshName= \'' + dish.dshName + '\'')

@@ -8,7 +8,7 @@ exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
         return (Math.pow((10 * val), 2) * 100);
     }
     var w2 = function (val) {
-        return 50 * val;
+        return 1000 * val;
     }
     var w3 = function (val){
         return 50 * val;
