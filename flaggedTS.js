@@ -5,6 +5,7 @@ const crypto = require('crypto');
 var evaluate = require('./eval_solution_sync');
 var evaluateFlags = require('./eval_flags');
 var possibleMovesByFlags = require('./flaggedTS_possible_moves')
+var possibleMovesByFlagsRand = require('./flaggedTS_possible_moves_random')
 
 var flaggedTabuEventEmitter = new events.EventEmitter();
 
@@ -71,39 +72,40 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
         bestSolution = JSON.parse(JSON.stringify(firstSolution));
         bestSolutionValue = evaluate.evaluateSolution(bestSolution, reqs, prefs, dishlist);
 
-        return flaggedTabuSearch(firstSolution, pmaxAddDropMoves, pmaxSwapMoves);
+        return flaggedTabuSearch(firstSolution);
 
     });
 
-    function flaggedTabuSearch(solution, maxAddDropMoves, maxSwapMoves) {
+    function flaggedTabuSearch(solution) {
 
         var neighbourhood = [];
         var moveValues = {};
 
         var currentSolutionValue = evaluate.evaluateSolution(solution, reqs, prefs, dishlist);
         var flagset = evaluateFlags.getFlagsForSoltuion(solution, reqs, prefs, dishlist);
-        var possibleMoves = possibleMovesByFlags.getPossbieMovesForFlags(solution, flagset, dishSet, flaggedDishesSet, prefs);
+        //var possibleMoves = possibleMovesByFlags.getPossbieMovesForFlags(solution, flagset, dishSet, flaggedDishesSet, prefs);
+        var possibleMovesRand = possibleMovesByFlagsRand.getPossbieMovesForFlagsRandomly(solution, flagset, dishSet, flaggedDishesSet, prefs)
         var jsonSolution = JSON.stringify(solution);
 
         /* prepare movement */
 
-        for(var p = 0; p < possibleMoves.length ; p++){
+        for(var p = 0; p < possibleMovesRand.length ; p++){
 
             var tempSolution = JSON.parse(JSON.stringify(solution));
-            tempSolution[possibleMoves[1][2]] = possibleMoves[0]
+            tempSolution[possibleMovesRand[p][1]][possibleMovesRand[p][2]] = possibleMovesRand[p][0]
             if(checkSolutionCredibility(tempSolution)){
                 neighbourhood.push(tempSolution);
             }
         }
 
-        for (var i = 0; i < 10; i++) {
+        for (var i = 0; i < 15*(flagset.isMonotonous); i++) {
   
             var tempSolution = JSON.parse(jsonSolution);
    
             var swapChangeIndexFrom = [];
             var swapChangeIndexTo = [];
    
-            for (var q = 0; q < 3; q++) {
+            for (var q = 0; q < 2; q++) {
                 
                 do{
                     swapChangeIndexFrom[q] = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
@@ -111,10 +113,10 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
 
                 do{
                     swapChangeIndexTo[q] = [randomNumber.getRandomNumber(0, 29), swapChangeIndexFrom[q][1]];
-                }while(tempSolution[swapChangeIndexTo[q][0]][swapChangeIndexTo[q][1]])
-   
-                
+                }while(tempSolution[swapChangeIndexTo[q][0]][swapChangeIndexTo[q][1]])                
             }
+
+            
    
             for (var k = 0; k < swapChangeIndexFrom.length; k++) {
                var swappedDish = tempSolution[swapChangeIndexFrom[k][0]][swapChangeIndexFrom[k][1]];
@@ -171,7 +173,7 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
 
         if (searchIterations === maxIterations) {
 
-            console.log('wartosc najlepszego rozwiazania = ' + bestSolutionValue);
+            console.log('wartosc najlepszego rozwiazania flagged = ' + bestSolutionValue);
             console.log(bestSolutionIteration);
             console.log(totalSwapActionCount + ' operacji swapow');
             console.log(totalAddDropActionCount + ' operacji add/drop');
@@ -187,9 +189,9 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
 
         } else {
 
-            (moveSolutionKey > maxAddDropMoves && moveSolutionKey != (maxAddDropMoves + maxSwapMoves + 1)) ? totalSwapActionCount++ : totalAddDropActionCount++;
+            moveSolutionKey > possibleMovesRand.length ? totalSwapActionCount++ : totalAddDropActionCount++;
             searchIterations++;
-            return flaggedTabuSearch(neighbourhood[moveSolutionKey], pmaxAddDropMoves, pmaxSwapMoves);
+            return flaggedTabuSearch(neighbourhood[moveSolutionKey]);
 
         }
     }

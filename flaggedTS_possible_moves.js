@@ -11,7 +11,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
             switch (true) {
                 case dishSet['breakfasts'].includes(flaggedDishlists['richInEnergy'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInEnergy'].includes(solution[j][0])){
+                    while(j<=solution.length && flaggedDishlists['richInEnergy'].includes(solution[j][0])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -21,7 +21,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['secondBreakfasts'].includes(flaggedDishlists['richInEnergy'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInEnergy'].includes(solution[j][1])){
+                    while(j<=solution.length && flaggedDishlists['richInEnergy'].includes(solution[j][1])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -31,7 +31,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['lunches'].includes(flaggedDishlists['richInEnergy'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInEnergy'].includes(solution[j][2])){
+                    while(j<=solution.length && flaggedDishlists['richInEnergy'].includes(solution[j][2])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -41,7 +41,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['meriendas'].includes(flaggedDishlists['richInEnergy'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInEnergy'].includes(solution[j][3])){
+                    while(j<=solution.length && flaggedDishlists['richInEnergy'].includes(solution[j][3])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -51,7 +51,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['richInEnergy'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInEnergy'].includes(solution[j][4])){
+                    while(j<=solution.length && flaggedDishlists['richInEnergy'].includes(solution[j][4])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -62,14 +62,14 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
             }
         }
     }
-    /*
+
     if (flagset.needsLessEnergy) {
 
         for(var i = 0; i < flaggedDishlists['notRichInEnergy'].length; i++){
             switch (true) {
                 case dishSet['breakfasts'].includes(flaggedDishlists['notRichInEnergy'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInEnergy'].includes(solution[j][0]) && solution[j][0]){
+                    while(j<=solution.length && flaggedDishlists['notRichInEnergy'].includes(solution[j][0]) && solution[j][0]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -79,7 +79,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['secondBreakfasts'].includes(flaggedDishlists['notRichInEnergy'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInEnergy'].includes(solution[j][1]) && solution[j][1]){
+                    while(j<=solution.length && flaggedDishlists['notRichInEnergy'].includes(solution[j][1]) && solution[j][1]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -89,7 +89,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['lunches'].includes(flaggedDishlists['notRichInEnergy'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInEnergy'].includes(solution[j][2]) && solution[j][2]){
+                    while(j<=solution.length && flaggedDishlists['notRichInEnergy'].includes(solution[j][2]) && solution[j][2]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -99,7 +99,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['meriendas'].includes(flaggedDishlists['notRichInEnergy'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInEnergy'].includes(solution[j][3]) && solution[j][3]){
+                    while(j<=solution.length && flaggedDishlists['notRichInEnergy'].includes(solution[j][3]) && solution[j][3]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -109,7 +109,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['notRichInEnergy'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInEnergy'].includes(solution[j][4]) && solution[j][4]){
+                    while(j<=solution.length && flaggedDishlists['notRichInEnergy'].includes(solution[j][4]) && solution[j][4]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -127,7 +127,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
             switch (true) {
                 case dishSet['breakfasts'].includes(flaggedDishlists['richInProtein'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInProtein'].includes(solution[j][0])){
+                    while(j<=solution.length && flaggedDishlists['richInProtein'].includes(solution[j][0])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -137,7 +137,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['secondBreakfasts'].includes(flaggedDishlists['richInProtein'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInProtein'].includes(solution[j][1])){
+                    while(j<=solution.length && flaggedDishlists['richInProtein'].includes(solution[j][1])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -147,7 +147,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['lunches'].includes(flaggedDishlists['richInProtein'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInProtein'].includes(solution[j][2])){
+                    while(j<=solution.length && flaggedDishlists['richInProtein'].includes(solution[j][2])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -157,7 +157,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['meriendas'].includes(flaggedDishlists['richInProtein'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInProtein'].includes(solution[j][3])){
+                    while(j<=solution.length && flaggedDishlists['richInProtein'].includes(solution[j][3])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -167,7 +167,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['richInProtein'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInProtein'].includes(solution[j][4])){
+                    while(j<=solution.length && flaggedDishlists['richInProtein'].includes(solution[j][4])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -185,7 +185,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
             switch (true) {
                 case dishSet['breakfasts'].includes(flaggedDishlists['notRichInProtein'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInProtein'].includes(solution[j][0]) && solution[j][0]){
+                    while(j<=solution.length && flaggedDishlists['notRichInProtein'].includes(solution[j][0]) && solution[j][0]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -195,7 +195,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['secondBreakfasts'].includes(flaggedDishlists['notRichInProtein'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInProtein'].includes(solution[j][1]) && solution[j][1]){
+                    while(j<=solution.length && flaggedDishlists['notRichInProtein'].includes(solution[j][1]) && solution[j][1]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -205,7 +205,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['lunches'].includes(flaggedDishlists['notRichInProtein'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInProtein'].includes(solution[j][2]) && solution[j][2]){
+                    while(j<=solution.length && flaggedDishlists['notRichInProtein'].includes(solution[j][2]) && solution[j][2]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -215,7 +215,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['meriendas'].includes(flaggedDishlists['notRichInProtein'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInProtein'].includes(solution[j][3]) && solution[j][3]){
+                    while(j<=solution.length && flaggedDishlists['notRichInProtein'].includes(solution[j][3]) && solution[j][3]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -225,7 +225,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['notRichInProtein'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInProtein'].includes(solution[j][4]) && solution[j][4]){
+                    while(j<=solution.length && flaggedDishlists['notRichInProtein'].includes(solution[j][4]) && solution[j][4]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -243,7 +243,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
             switch (true) {
                 case dishSet['breakfasts'].includes(flaggedDishlists['richInFat'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInFat'].includes(solution[j][0])){
+                    while(j<=solution.length && flaggedDishlists['richInFat'].includes(solution[j][0])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -253,7 +253,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['secondBreakfasts'].includes(flaggedDishlists['richInFat'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInFat'].includes(solution[j][1])){
+                    while(j<=solution.length && flaggedDishlists['richInFat'].includes(solution[j][1])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -263,7 +263,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['lunches'].includes(flaggedDishlists['richInFat'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInFat'].includes(solution[j][2])){
+                    while(j<=solution.length && flaggedDishlists['richInFat'].includes(solution[j][2])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -273,7 +273,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['meriendas'].includes(flaggedDishlists['richInFat'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInFat'].includes(solution[j][3])){
+                    while(j<=solution.length && flaggedDishlists['richInFat'].includes(solution[j][3])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -283,7 +283,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['richInFat'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInFat'].includes(solution[j][4])){
+                    while(j<=solution.length && flaggedDishlists['richInFat'].includes(solution[j][4])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -301,7 +301,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
             switch (true) {
                 case dishSet['breakfasts'].includes(flaggedDishlists['notRichInFat'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInFat'].includes(solution[j][0]) && solution[j][0]){
+                    while(j<=solution.length && flaggedDishlists['notRichInFat'].includes(solution[j][0]) && solution[j][0]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -311,7 +311,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['secondBreakfasts'].includes(flaggedDishlists['notRichInFat'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInFat'].includes(solution[j][1]) && solution[j][1]){
+                    while(j<=solution.length && flaggedDishlists['notRichInFat'].includes(solution[j][1]) && solution[j][1]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -321,7 +321,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['lunches'].includes(flaggedDishlists['notRichInFat'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInFat'].includes(solution[j][2]) && solution[j][2]){
+                    while(j<=solution.length && flaggedDishlists['notRichInFat'].includes(solution[j][2]) && solution[j][2]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -331,7 +331,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['meriendas'].includes(flaggedDishlists['notRichInFat'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInFat'].includes(solution[j][3]) && solution[j][3]){
+                    while(j<=solution.length && flaggedDishlists['notRichInFat'].includes(solution[j][3]) && solution[j][3]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -341,7 +341,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['notRichInFat'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInFat'].includes(solution[j][4]) && solution[j][4]){
+                    while(j<=solution.length && flaggedDishlists['notRichInFat'].includes(solution[j][4]) && solution[j][4]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -359,7 +359,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
             switch (true) {
                 case dishSet['breakfasts'].includes(flaggedDishlists['richInCarbohydrates'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInCarbohydrates'].includes(solution[j][0])){
+                    while(j<=solution.length && flaggedDishlists['richInCarbohydrates'].includes(solution[j][0])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -369,7 +369,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['secondBreakfasts'].includes(flaggedDishlists['richInCarbohydrates'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInCarbohydrates'].includes(solution[j][1])){
+                    while(j<=solution.length && flaggedDishlists['richInCarbohydrates'].includes(solution[j][1])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -379,7 +379,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['lunches'].includes(flaggedDishlists['richInCarbohydrates'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInCarbohydrates'].includes(solution[j][2])){
+                    while(j<=solution.length && flaggedDishlists['richInCarbohydrates'].includes(solution[j][2])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -389,7 +389,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['meriendas'].includes(flaggedDishlists['richInCarbohydrates'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInCarbohydrates'].includes(solution[j][3])){
+                    while(j<=solution.length && flaggedDishlists['richInCarbohydrates'].includes(solution[j][3])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -399,7 +399,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['richInCarbohydrates'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInCarbohydrates'].includes(solution[j][4])){
+                    while(j<=solution.length && flaggedDishlists['richInCarbohydrates'].includes(solution[j][4])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -417,7 +417,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
             switch (true) {
                 case dishSet['breakfasts'].includes(flaggedDishlists['notRichInCarbohydrates'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInCarbohydrates'].includes(solution[j][0]) && solution[j][0]){
+                    while(j<=solution.length && flaggedDishlists['notRichInCarbohydrates'].includes(solution[j][0]) && solution[j][0]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -427,7 +427,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['secondBreakfasts'].includes(flaggedDishlists['notRichInCarbohydrates'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInCarbohydrates'].includes(solution[j][1]) && solution[j][1]){
+                    while(j<=solution.length && flaggedDishlists['notRichInCarbohydrates'].includes(solution[j][1]) && solution[j][1]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -437,7 +437,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['lunches'].includes(flaggedDishlists['notRichInCarbohydrates'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInCarbohydrates'].includes(solution[j][2]) && solution[j][2]){
+                    while(j<=solution.length && flaggedDishlists['notRichInCarbohydrates'].includes(solution[j][2]) && solution[j][2]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -447,7 +447,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['meriendas'].includes(flaggedDishlists['notRichInCarbohydrates'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInCarbohydrates'].includes(solution[j][3]) && solution[j][3]){
+                    while(j<=solution.length && flaggedDishlists['notRichInCarbohydrates'].includes(solution[j][3]) && solution[j][3]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -457,7 +457,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['notRichInCarbohydrates'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInCarbohydrates'].includes(solution[j][4]) && solution[j][4]){
+                    while(j<=solution.length && flaggedDishlists['notRichInCarbohydrates'].includes(solution[j][4]) && solution[j][4]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -475,7 +475,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
             switch (true) {
                 case dishSet['breakfasts'].includes(flaggedDishlists['richInFiber'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInFiber'].includes(solution[j][0])){
+                    while(j<=solution.length && flaggedDishlists['richInFiber'].includes(solution[j][0])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -485,7 +485,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['secondBreakfasts'].includes(flaggedDishlists['richInFiber'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInFiber'].includes(solution[j][1])){
+                    while(j<=solution.length && flaggedDishlists['richInFiber'].includes(solution[j][1])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -495,7 +495,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['lunches'].includes(flaggedDishlists['richInFiber'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInFiber'].includes(solution[j][2])){
+                    while(j<=solution.length && flaggedDishlists['richInFiber'].includes(solution[j][2])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -505,7 +505,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['meriendas'].includes(flaggedDishlists['richInFiber'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInFiber'].includes(solution[j][3])){
+                    while(j<=solution.length && flaggedDishlists['richInFiber'].includes(solution[j][3])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -515,7 +515,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['richInFiber'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['richInFiber'].includes(solution[j][4])){
+                    while(j<=solution.length && flaggedDishlists['richInFiber'].includes(solution[j][4])){
                         j++;
                     }
                     if(j!=solution.length){
@@ -533,7 +533,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
             switch (true) {
                 case dishSet['breakfasts'].includes(flaggedDishlists['notRichInFiber'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInFiber'].includes(solution[j][0]) && solution[j][0]){
+                    while(j<=solution.length && flaggedDishlists['notRichInFiber'].includes(solution[j][0]) && solution[j][0]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -543,7 +543,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['secondBreakfasts'].includes(flaggedDishlists['notRichInFiber'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInFiber'].includes(solution[j][1]) && solution[j][1]){
+                    while(j<=solution.length && flaggedDishlists['notRichInFiber'].includes(solution[j][1]) && solution[j][1]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -553,7 +553,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['lunches'].includes(flaggedDishlists['notRichInFiber'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInFiber'].includes(solution[j][2]) && solution[j][2]){
+                    while(j<=solution.length && flaggedDishlists['notRichInFiber'].includes(solution[j][2]) && solution[j][2]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -563,7 +563,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['meriendas'].includes(flaggedDishlists['notRichInFiber'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInFiber'].includes(solution[j][3]) && solution[j][3]){
+                    while(j<=solution.length && flaggedDishlists['notRichInFiber'].includes(solution[j][3]) && solution[j][3]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -573,7 +573,7 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['notRichInFiber'][i]): {
                     var j = 0;
-                    while(j<=solution.length && !flaggedDishlists['notRichInFiber'].includes(solution[j][4]) && solution[j][4]){
+                    while(j<=solution.length && flaggedDishlists['notRichInFiber'].includes(solution[j][4]) && solution[j][4]){
                         j++;
                     }
                     if(j!=solution.length){
@@ -625,6 +625,5 @@ exports.getPossbieMovesForFlags = function (solution, flagset, dishSet, flaggedD
             }
         }
     }
-    */
     return possibleMoves;
 }

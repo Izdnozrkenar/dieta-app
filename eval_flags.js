@@ -72,7 +72,7 @@ exports.getFlagsForSoltuion = function (solution, reqs, preferences, dishlist) {
             })
         }
 
-        if (monotonnyScore > 10) { flagset.isMonotonous = true };
+        if (monotonnyScore > 3) { flagset.isMonotonous = true };
     }(true)
 
     var setPreferencesFlags = function () {

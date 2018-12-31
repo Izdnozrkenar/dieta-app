@@ -8,13 +8,17 @@ exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
         return (Math.pow((10 * val), 2) * 100);
     }
     var w2 = function (val) {
-        return 1000 * val;
+        return 100 * val;
     }
     var w3 = function (val){
-        return 50 * val;
+        return 100 * val;
+    }
+    var w4 = function (val){
+        return 100 * val;
     }
 
     var monotonnyScore = 0;
+    var unbalancedScore = 0;
     var prefScore = 0;
 
     var solEnergy = 0;
@@ -67,8 +71,8 @@ exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
         solution.forEach(dishRow => {
             dishRow.forEach(dish => {
                 switch (dish){
-                    case preferences[dish] == 0:{
-                        prefScore += 1;
+                    case preferences[dish] == 1:{
+                        prefScore -= 5;
                         break;
                     }
                     case preferences[dish] == -1:{
@@ -76,9 +80,14 @@ exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
                         break;
                     }
                 }
-            })
+                if(!dish){
+                    unbalancedScore++;
+                }
+            }
+            )
         });
         goalValue += w3(prefScore);
+        goalValue += w4(unbalancedScore);
     }(true)
 
     return goalValue;
