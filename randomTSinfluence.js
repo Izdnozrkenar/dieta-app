@@ -191,14 +191,14 @@ exports.generateRandomSolutionWithInfluenceMechanism = function (pool, reqs, all
            console.log(totalSwapActionCount + ' operacji swapow');
            console.log(totalAddDropActionCount + ' operacji add/drop');
   
-        } else if (searchIterations % 1000 == 0) {
+        } else if (searchIterations % 130 == 0) {
   
            /* clear stack */
   
            searchIterations++;
            setTimeout(() => {
               return randomTabuSearch(neighbourhood[moveSolutionKey], pmaxAddDropMoves, pmaxSwapMoves, pinfluence);
-           }, 1);
+           }, 10);
   
         } else if (searchIterations % 100 == 0) {
 

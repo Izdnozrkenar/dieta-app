@@ -7,15 +7,20 @@ exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
     var w1 = function (val) {
         return (Math.pow((10 * val), 2) * 100);
     }
-    var w2 = function (val) {
-        return 100 * val;
-    }
-    var w3 = function (val){
-        return 100 * val;
-    }
-    var w4 = function (val){
-        return 100 * val;
-    }
+
+    var w2 = 100;
+    var w3 = 100;
+    var w4 = 100;
+
+    // var w2 = function (val) {
+    //     return 100 * val;
+    // }
+    // var w3 = function (val){
+    //     return 100 * val;
+    // }
+    // var w4 = function (val){
+    //     return 100 * val;
+    // }
 
     var monotonnyScore = 0;
     var unbalancedScore = 0;
@@ -53,8 +58,11 @@ exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
 
     var evaluateMonnotony = function () {
 
-        for (var i = 0; i < 30; i++) {
+        for (var i = 0; i < solution.length; i++) {
             solution[i].forEach(dish => {
+                if(dish === null){
+                    unbalancedScore++;
+                }
                 for (var j = i + 1; j < (i + 4) && j < 30; j++) {
                     if (solution[j].includes(dish) && dish !== null) {
                         monotonnyScore++;
@@ -63,13 +71,13 @@ exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
                 }
             })
         }
-
-        goalValue += w2(monotonnyScore);
+        goalValue += w4*(unbalancedScore);
+        goalValue += w2*(monotonnyScore);
     }(true)
 
     var evaluatePreferences = function (){
-        solution.forEach(dishRow => {
-            dishRow.forEach(dish => {
+        for (var i = 0; i < solution.length; i++) {
+            solution[i].forEach(dish => {
                 switch (dish){
                     case preferences[dish] == 1:{
                         prefScore -= 5;
@@ -80,14 +88,9 @@ exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
                         break;
                     }
                 }
-                if(!dish){
-                    unbalancedScore++;
-                }
-            }
-            )
-        });
-        goalValue += w3(prefScore);
-        goalValue += w4(unbalancedScore);
+            })
+        }
+        goalValue += w3*(prefScore);
     }(true)
 
     return goalValue;

@@ -212,14 +212,14 @@ exports.generateRandomSolution = function (pool, reqs, allrgs, prefs, dishlist, 
          console.log(totalSwapActionCount + ' operacji swapow');
          console.log(totalAddDropActionCount + ' operacji add/drop');
 
-      } else if (searchIterations % 1000 == 0) {
+      } else if (searchIterations % 100 == 0) {
 
          /* clear stack */
 
          searchIterations++;
          setTimeout(() => {
             return randomTabuSearch(neighbourhood[moveSolutionKey], pmaxAddDropMoves, pmaxSwapMoves);
-         }, 1);
+         }, 10);
 
       } else {
 
