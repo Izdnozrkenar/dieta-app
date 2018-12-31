@@ -38,14 +38,22 @@ exports.generateRandomSolution = function (pool, reqs, allrgs, prefs, dishlist, 
          } while (atributesTabuList.hasOwnProperty(tempBreakfastId))
 
          do {
+            var tempSecondBreakfastId = randomNumber.getRandomNumber(0, breakfastIdlist.length - 1);
+         } while (atributesTabuList.hasOwnProperty(tempSecondBreakfastId))
+
+         do {
             var tempLunchId = randomNumber.getRandomNumber(0, lunchIdlist.length - 1);
          } while (atributesTabuList.hasOwnProperty(tempLunchId))
+
+         do {
+            var tempMeriendaId = randomNumber.getRandomNumber(0, lunchIdlist.length - 1);
+         } while (atributesTabuList.hasOwnProperty(tempMeriendaId))
 
          do {
             var tempDinnerId = randomNumber.getRandomNumber(0, lunchIdlist.length - 1);
          } while (atributesTabuList.hasOwnProperty(tempDinnerId))
 
-         firstSolution.push([breakfastIdlist[tempBreakfastId], null, lunchIdlist[tempLunchId], null, dinnerIdlist[tempDinnerId]]);
+         firstSolution.push([breakfastIdlist[tempBreakfastId], secondBreakfastIdlist[tempSecondBreakfastId], lunchIdlist[tempLunchId], meriendaIdlist[tempMeriendaId], dinnerIdlist[tempDinnerId]]);
       }
       var firstHash = crypto.createHash('md5').update(firstSolution.join()).digest('hex');
 
@@ -114,11 +122,15 @@ exports.generateRandomSolution = function (pool, reqs, allrgs, prefs, dishlist, 
          var swapChangeIndexFrom = [];
          var swapChangeIndexTo = [];
 
-         for (var q = 0; q < 3; q++) {
+         for (var q = 0; q < 2; q++) {
 
-            swapChangeIndexFrom[q] = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
+            do {
+               swapChangeIndexFrom[q] = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
+            } while (!tempSolution[swapChangeIndexFrom[q][0]][swapChangeIndexFrom[q][1]])
 
-            swapChangeIndexTo[q] = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
+            do {
+               swapChangeIndexTo[q] = [randomNumber.getRandomNumber(0, 29), swapChangeIndexFrom[q][1]];
+            } while (!tempSolution[swapChangeIndexTo[q][0]][swapChangeIndexTo[q][1]])
          }
 
          for (var k = 0; k < swapChangeIndexFrom.length; k++) {
@@ -131,35 +143,35 @@ exports.generateRandomSolution = function (pool, reqs, allrgs, prefs, dishlist, 
       }
 
       for (var i = 0; i < 10; i++) {
-  
-            var tempSolution = JSON.parse(jsonSolution);
-   
-            var swapChangeIndexFrom = [];
-            var swapChangeIndexTo = [];
-   
-            for (var q = 0; q < 3; q++) {
-                
-               do{
-                   swapChangeIndexFrom[q] = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
-               }while(tempSolution[swapChangeIndexFrom[q][0]][swapChangeIndexFrom[q][1]])
 
-               do{
-                   swapChangeIndexTo[q] = [randomNumber.getRandomNumber(0, 29), swapChangeIndexFrom[q][1]];
-               }while(tempSolution[swapChangeIndexTo[q][0]][swapChangeIndexTo[q][1]])
-  
-               
-           }
-  
-           for (var k = 0; k < swapChangeIndexFrom.length; k++) {
-              var swappedDish = tempSolution[swapChangeIndexFrom[k][0]][swapChangeIndexFrom[k][1]];
-              tempSolution[swapChangeIndexFrom[k][0]][swapChangeIndexFrom[k][1]] = tempSolution[swapChangeIndexTo[k][0]][swapChangeIndexTo[k][1]];
-              tempSolution[swapChangeIndexTo[k][0]][swapChangeIndexTo[k][1]] = swappedDish;
-           }
+         var tempSolution = JSON.parse(jsonSolution);
 
-            
-   
-            neighbourhood.push(tempSolution);
+         var swapChangeIndexFrom = [];
+         var swapChangeIndexTo = [];
+
+         for (var q = 0; q < 3; q++) {
+
+            do {
+               swapChangeIndexFrom[q] = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
+            } while (tempSolution[swapChangeIndexFrom[q][0]][swapChangeIndexFrom[q][1]])
+
+            do {
+               swapChangeIndexTo[q] = [randomNumber.getRandomNumber(0, 29), swapChangeIndexFrom[q][1]];
+            } while (tempSolution[swapChangeIndexTo[q][0]][swapChangeIndexTo[q][1]])
+
+
          }
+
+         for (var k = 0; k < swapChangeIndexFrom.length; k++) {
+            var swappedDish = tempSolution[swapChangeIndexFrom[k][0]][swapChangeIndexFrom[k][1]];
+            tempSolution[swapChangeIndexFrom[k][0]][swapChangeIndexFrom[k][1]] = tempSolution[swapChangeIndexTo[k][0]][swapChangeIndexTo[k][1]];
+            tempSolution[swapChangeIndexTo[k][0]][swapChangeIndexTo[k][1]] = swappedDish;
+         }
+
+
+
+         neighbourhood.push(tempSolution);
+      }
 
       /* evaluate neighbourhood */
 
@@ -211,15 +223,16 @@ exports.generateRandomSolution = function (pool, reqs, allrgs, prefs, dishlist, 
          console.log(bestSolutionIteration);
          console.log(totalSwapActionCount + ' operacji swapow');
          console.log(totalAddDropActionCount + ' operacji add/drop');
+         evaluate.evaluateSolution(bestSolution, reqs, prefs, dishlist);
 
-      } else if (searchIterations % 100 == 0) {
+      } else if (searchIterations % 2000 == 0) {
 
          /* clear stack */
 
          searchIterations++;
          setTimeout(() => {
             return randomTabuSearch(neighbourhood[moveSolutionKey], pmaxAddDropMoves, pmaxSwapMoves);
-         }, 10);
+         }, 1);
 
       } else {
 

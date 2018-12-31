@@ -60,9 +60,6 @@ exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
 
         for (var i = 0; i < solution.length; i++) {
             solution[i].forEach(dish => {
-                if(dish === null){
-                    unbalancedScore++;
-                }
                 for (var j = i + 1; j < (i + 4) && j < 30; j++) {
                     if (solution[j].includes(dish) && dish !== null) {
                         monotonnyScore++;

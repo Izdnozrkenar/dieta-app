@@ -1,7 +1,7 @@
 'use strict';
 
 exports.getRandomNumber = function (min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min);
+    var nmin = Math.ceil(min);
+    var nmax = Math.floor(max);
+    return Math.floor(Math.random() * (nmax - nmin + 1) + nmin);
 }
