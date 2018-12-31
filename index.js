@@ -3,8 +3,10 @@ const dbConnector = require('./poolmodule');
 const randomTS = require('./randomTS.js');
 const randomTSinfluence = require('./randomTSinfluence');
 const flaggedTS = require('./flaggedTS');
+const partialflaggedTS = require('./partial_flaggedTS')
 const dbUpdate = require('./databaseStaticUpdate');
 const evaluator = require('./eval_condidtions')
+
 
 var dishList = {};
 
@@ -24,8 +26,9 @@ pool.query('SELECT dshID, dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFi
             dishList[values.dshID]=values;
             preferences[values.dshID] = 0;
         })
-        //var rndTSinflu = randomTSinfluence.generateRandomSolutionWithInfluenceMechanism(pool, requirements, [], preferences, dishList, 10, 20, 10, 3);
-        //var rndTS = randomTS.generateRandomSolution(pool, requirements, [], preferences, dishList, 20, 20, 10);
-        var flgTS = flaggedTS.generateFlaggedSolution(pool,requirements,[0],preferences,dishList,20);
+        //var rndTSinflu = randomTSinfluence.generateRandomSolutionWithInfluenceMechanism(pool, requirements, [], preferences, dishList, 500, 20, 10, 1);
+        //var rndTS = randomTS.generateRandomSolution(pool, requirements, [], preferences, dishList, 500, 20, 10);
+        //var flgTS = flaggedTS.generateFlaggedSolution(pool,requirements,[0],preferences,dishList,20);
+        var pflgTS = partialflaggedTS.generatePartialFlaggedSolution(pool,requirements,[0],preferences,dishList,20)
 
     })
