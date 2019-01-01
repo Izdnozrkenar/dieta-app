@@ -15,7 +15,14 @@ const pool = dbConnector.setConnectionToDatabase();
 const conn = dbConnector.setCallbackConnectionToDatabase();
 dbUpdate.updateDishesDatabase(pool, conn);
 
-var preferences = {}
+var preferences = {
+
+    150: -1,
+    171: -1,
+    132: -1,
+    172: -1,
+    180: -1,
+}
 
 var requirements = evaluator.calculateRequirements(1, 25, 1.4, 60);
 
@@ -28,8 +35,8 @@ pool.query('SELECT dshID, dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFi
             preferences[values.dshID] = 0;
         })
         //var rndTSinflu = randomTSinfluence.generateRandomSolutionWithInfluenceMechanism(pool, requirements, [], preferences, dishList, 200, 20, 10, 3);
-        var rndTS = randomTS.generateRandomSolution(pool, requirements, [], preferences, dishList, 100, 20, 10);
-        //var flgTS = flaggedTS.generateFlaggedSolution(pool,requirements,[0],preferences,dishList,100);
+        //var rndTS = randomTS.generateRandomSolution(pool, requirements, [], preferences, dishList, 100, 20, 300);
+        //var flgTS = flaggedTS.generateFlaggedSolution(pool,requirements,[0],preferences,dishList,300);
         var prndTS = partialRandomTS.generatePartialRandomSolution(pool,requirements,[0],preferences,dishList,20)
         //var pflgTS = partialflaggedTS.generatePartialFlaggedSolution(pool,requirements,[0],preferences,dishList,20)
 

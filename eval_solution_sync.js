@@ -10,17 +10,6 @@ exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
 
     var w2 = 100;
     var w3 = 100;
-    var w4 = 100;
-
-    // var w2 = function (val) {
-    //     return 100 * val;
-    // }
-    // var w3 = function (val){
-    //     return 100 * val;
-    // }
-    // var w4 = function (val){
-    //     return 100 * val;
-    // }
 
     var monotonnyScore = 0;
     var unbalancedScore = 0;
@@ -52,9 +41,7 @@ exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
         var fatDemand = Math.abs(((reqs.fat * sLength) - solFat) / (reqs.fat * sLength));
         var carbohydratesDemand = Math.abs(((reqs.carbohydrates * sLength) - solCarbohydrates) / (reqs.carbohydrates * sLength));
         var fiberDemand = Math.abs(((reqs.fiber * sLength) - solFiber) / (reqs.fiber * sLength));
-
-        //console.log('zapotrzebowanie na energie = ' + energyDemand + '\nzapotrzebowanie na bialko = ' + proteinDemand + '\nzapotrzebowanie na tłuszcz = ' + fatDemand + '\nzapotrzebowanie na węglowodany = ' + carbohydratesDemand + '\nzapotrzebowanie na blonnik = ' + fiberDemand);
-
+        
         goalValue += w1(energyDemand) + w1(proteinDemand) + w1(fatDemand) + w1(carbohydratesDemand) + w1(fiberDemand);
     }(true);
 
