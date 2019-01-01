@@ -27,7 +27,7 @@ pool.query('SELECT dshID, dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFi
             preferences[values.dshID] = 0;
         })
         //var rndTSinflu = randomTSinfluence.generateRandomSolutionWithInfluenceMechanism(pool, requirements, [], preferences, dishList, 500, 20, 10, 1);
-        //var rndTS = randomTS.generateRandomSolution(pool, requirements, [], preferences, dishList, 10, 20, 10);
+        //var rndTS = randomTS.generateRandomSolution(pool, requirements, [], preferences, dishList, 150, 20, 10);
         //var flgTS = flaggedTS.generateFlaggedSolution(pool,requirements,[0],preferences,dishList,500);
         var pflgTS = partialflaggedTS.generatePartialRandomSolution(pool,requirements,[0],preferences,dishList,20)
 

@@ -106,14 +106,14 @@ exports.generatePartialRandomSolution = function (pool, reqs, allrgs, prefs, dis
             }
 
             if (rowsCount == 6) {
-                optimizeSolutionBlock(0)
+                optimizeSolutionBlock(0,false)
             } else {
                 solution.push(row[moveSolutionKey]);
                 getRow(++rowsCount)
             }
         };
 
-        function optimizeSolutionBlock(blockIterationsCount) {
+        function optimizeSolutionBlock(blockIterationsCount, allowSwaps) {
 
             var neighbourhood = [];
             var currentSolutionValue = evaluate.evaluateSolution(solution, reqs, prefs, dishlist);
@@ -159,6 +159,35 @@ exports.generatePartialRandomSolution = function (pool, reqs, allrgs, prefs, dis
                 neighbourhood.push(tempSolution);
             }
 
+            for (var i = 0; i < 15 * (allowSwaps); i++) {
+
+                var tempSolution = JSON.parse(JSON.stringify(solution));
+    
+                var swapChangeIndexFrom = [];
+                var swapChangeIndexTo = [];
+    
+                for (var q = 0; q < 2; q++) {
+    
+                    do {
+                        swapChangeIndexFrom[q] = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
+                    } while (!tempSolution[swapChangeIndexFrom[q][0]][swapChangeIndexFrom[q][1]])
+    
+                    do {
+                        swapChangeIndexTo[q] = [randomNumber.getRandomNumber(0, 29), swapChangeIndexFrom[q][1]];
+                    } while (!tempSolution[swapChangeIndexTo[q][0]][swapChangeIndexTo[q][1]])
+                }
+    
+    
+    
+                for (var k = 0; k < swapChangeIndexFrom.length; k++) {
+                    var swappedDish = tempSolution[swapChangeIndexFrom[k][0]][swapChangeIndexFrom[k][1]];
+                    tempSolution[swapChangeIndexFrom[k][0]][swapChangeIndexFrom[k][1]] = tempSolution[swapChangeIndexTo[k][0]][swapChangeIndexTo[k][1]];
+                    tempSolution[swapChangeIndexTo[k][0]][swapChangeIndexTo[k][1]] = swappedDish;
+                }
+    
+                neighbourhood.push(tempSolution);
+            }
+
             var moveValues = {};
 
             for (var tabu in atributesTabuList) {
@@ -195,18 +224,25 @@ exports.generatePartialRandomSolution = function (pool, reqs, allrgs, prefs, dis
                     }
                 }
             }
+            if(blockIterationsCount == 150){
 
-            if (blocksCount == 5) {
+                console.log(evaluate.evaluateSolution(solution, reqs, prefs, dishlist))
 
-                console.log('wartosc najlepszego rozwiazania to = ' + evaluate.evaluateSolution(solution, reqs, prefs, dishlist));
+            } else if (blocksCount == 5) {
 
-            } else if (blockIterationsCount === 500) {
+                optimizeSolutionBlock(blockIterationsCount+1, true);
+
+            } else if (blockIterationsCount === 100) {
 
                 blocksCount++;
                 getRow(0)                
 
             } else {
-                optimizeSolutionBlock(blockIterationsCount+1);
+                
+                setTimeout(() => {
+                    optimizeSolutionBlock(blockIterationsCount+1, false);
+                }, 1);
+        
             }
         }
 
