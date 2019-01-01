@@ -32,6 +32,8 @@ exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
     var solCarbohydrates = 0;
     var solFiber = 0;
 
+    var sLength = solution.length;
+
     solution.forEach(dishRow => {
         dishRow.forEach(dish => {
             if (dish) {
@@ -45,11 +47,11 @@ exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
     });
 
     var calculateNutrients= function() {
-        var energyDemand = Math.abs(((reqs.energy * 30) - solEnergy) / (reqs.energy * 30));
-        var proteinDemand = Math.abs(((reqs.protein * 30) - solProtein) / (reqs.protein * 30));
-        var fatDemand = Math.abs(((reqs.fat * 30) - solFat) / (reqs.fat * 30));
-        var carbohydratesDemand = Math.abs(((reqs.carbohydrates * 30) - solCarbohydrates) / (reqs.carbohydrates * 30));
-        var fiberDemand = Math.abs(((reqs.fiber * 30) - solFiber) / (reqs.fiber * 30));
+        var energyDemand = Math.abs(((reqs.energy * sLength) - solEnergy) / (reqs.energy * sLength));
+        var proteinDemand = Math.abs(((reqs.protein * sLength) - solProtein) / (reqs.protein * sLength));
+        var fatDemand = Math.abs(((reqs.fat * sLength) - solFat) / (reqs.fat * sLength));
+        var carbohydratesDemand = Math.abs(((reqs.carbohydrates * sLength) - solCarbohydrates) / (reqs.carbohydrates * sLength));
+        var fiberDemand = Math.abs(((reqs.fiber * sLength) - solFiber) / (reqs.fiber * sLength));
 
         //console.log('zapotrzebowanie na energie = ' + energyDemand + '\nzapotrzebowanie na bialko = ' + proteinDemand + '\nzapotrzebowanie na tłuszcz = ' + fatDemand + '\nzapotrzebowanie na węglowodany = ' + carbohydratesDemand + '\nzapotrzebowanie na blonnik = ' + fiberDemand);
 
@@ -60,7 +62,7 @@ exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
 
         for (var i = 0; i < solution.length; i++) {
             solution[i].forEach(dish => {
-                for (var j = i + 1; j < (i + 4) && j < 30; j++) {
+                for (var j = i + 1; j < (i + 4) && j < sLength; j++) {
                     if (solution[j].includes(dish) && dish !== null) {
                         monotonnyScore++;
                         break;
@@ -68,7 +70,6 @@ exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
                 }
             })
         }
-        goalValue += w4*(unbalancedScore);
         goalValue += w2*(monotonnyScore);
     }(true)
 

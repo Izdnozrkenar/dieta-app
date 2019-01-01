@@ -95,22 +95,27 @@ exports.generateRandomSolutionWithInfluenceMechanism = function (pool, reqs, all
                     case addDropChangeIndex[1] == 0: {
                         var randomBreakfastId = randomNumber.getRandomNumber(0, breakfastIdlist.length - 1);
                         tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = breakfastIdlist[randomBreakfastId];
+                        break;
                     }
                     case addDropChangeIndex[1] == 1: {
                         var randomSecondBreakfastId = randomNumber.getRandomNumber(0, secondBreakfastIdlist.length - 1);
                         tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = secondBreakfastIdlist[randomSecondBreakfastId];
+                        break;
                     }
                     case addDropChangeIndex[1] == 2: {
                         var randomLunchId = randomNumber.getRandomNumber(0, lunchIdlist.length - 1);
                         tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = lunchIdlist[randomLunchId];
+                        break;
                     }
                     case addDropChangeIndex[1] == 3: {
                         var randomMeriendaId = randomNumber.getRandomNumber(0, meriendaIdlist.length - 1);
                         tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = meriendaIdlist[randomMeriendaId];
+                        break;
                     }
                     case addDropChangeIndex[1] == 4: {
                         var randomDinnerId = randomNumber.getRandomNumber(0, dinnerIdlist.length - 1);
                         tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = dinnerIdlist[randomDinnerId];
+                        break;
                     }
                 }
             }

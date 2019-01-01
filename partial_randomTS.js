@@ -7,7 +7,7 @@ var evalPartial = require('./eval_solution_partial_sync')
 
 var pflaggedTabuEventEmitter = new events.EventEmitter();
 
-exports.generatePartialFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist, maxIterations, pmaxAddDropMoves, pmaxSwapMoves) {
+exports.generatePartialRandomSolution = function (pool, reqs, allrgs, prefs, dishlist, maxIterations, pmaxAddDropMoves, pmaxSwapMoves) {
 
     var solutionsTabuList = {};
     var atributesTabuList = {};
@@ -33,64 +33,59 @@ exports.generatePartialFlaggedSolution = function (pool, reqs, allrgs, prefs, di
         notRichInFiber: []
     }
 
-    var bestSolution = [];
-    var bestSolutionValue = 0;
-    var bestSolutionIteration = 0;
-
     var searchIterations = 0;
 
-    var totalSwapActionCount = 0;
-    var totalAddDropActionCount = 0;
-
-    var solution = [];
 
     getDishesByType(pool);
 
     pflaggedTabuEventEmitter.on('dish_sorting_complete', () => {
 
+        var solution = [];
+        var blocksCount = 0;
         getRow(0);
 
-        function getRow(blockCount) {
+
+        function getRow(rowsCount) {
 
             var moveValues = {};
-    
+
             var row = [];
-    
+
             for (var i = 0; i < 20; i++) {
                 do {
                     var tempBreakfastId = randomNumber.getRandomNumber(0, dishSet['breakfasts'].length - 1);
                 } while (atributesTabuList.hasOwnProperty(tempBreakfastId))
-    
+
                 do {
                     var tempSecondBreakfastId = randomNumber.getRandomNumber(0, dishSet['secondBreakfasts'].length - 1);
                 } while (atributesTabuList.hasOwnProperty(tempSecondBreakfastId))
-    
+
                 do {
                     var tempLunchId = randomNumber.getRandomNumber(0, dishSet['lunches'].length - 1);
                 } while (atributesTabuList.hasOwnProperty(tempLunchId))
-    
+
                 do {
                     var tempMeriendaId = randomNumber.getRandomNumber(0, dishSet['meriendas'].length - 1);
                 } while (atributesTabuList.hasOwnProperty(tempMeriendaId))
-    
+
                 do {
                     var tempDinnerId = randomNumber.getRandomNumber(0, dishSet['dinners'].length - 1);
                 } while (atributesTabuList.hasOwnProperty(tempDinnerId))
-    
+
                 row.push([dishSet['breakfasts'][tempBreakfastId], dishSet['secondBreakfasts'][tempSecondBreakfastId], dishSet['lunches'][tempLunchId], dishSet['meriendas'][tempMeriendaId], dishSet['dinners'][tempDinnerId]]);
-    
+
             }
-    
+
             for (var index = 0; index < row.length; index++) {
                 moveValues[index] = evalPartial.evaluatePartialSolution(row[index], reqs, prefs, dishlist);
             }
-    
+
             var currentSolutionValue = moveValues[0];
             var moveSolutionKey = 0;
-    
+
             for (var key in Object.keys(moveValues)) {
                 if (currentSolutionValue >= moveValues[key]) {
-                    if (checkSolutionCredibility(row[key])) {
+                    if (checkRowCredibility(row[key])) {
                         currentSolutionValue = moveValues[key];
                         moveSolutionKey = key
                     }
@@ -106,24 +101,120 @@ exports.generatePartialFlaggedSolution = function (pool, reqs, allrgs, prefs, di
                 }
             }
 
-            for(var index = 0; index < row[moveSolutionKey].length; index++){
+            for (var index = 0; index < row[moveSolutionKey].length; index++) {
                 atributesTabuList[row[moveSolutionKey][index]] = 3;
             }
-    
-            console.log(moveSolutionKey);
-    
-            if (blockCount == 5) {
-                
-                console.log('koniec');
+
+            if (rowsCount == 6) {
+                optimizeSolutionBlock(0)
             } else {
                 solution.push(row[moveSolutionKey]);
-                getRow(++blockCount)
+                getRow(++rowsCount)
             }
         };
 
+        function optimizeSolutionBlock(blockIterationsCount) {
+
+            var neighbourhood = [];
+            var currentSolutionValue = evaluate.evaluateSolution(solution, reqs, prefs, dishlist);
+
+            for (var i = 0; i < 20; i++) {
+
+                var tempSolution = JSON.parse(JSON.stringify(solution));
+
+                /* generating random choice */
+
+                for (var j = 0; j < 2; j++) {
+
+                    var addDropChangeIndex = [randomNumber.getRandomNumber(0, solution.length - 1), randomNumber.getRandomNumber(0, 4)];
+
+                    switch (true) {
+                        case addDropChangeIndex[1] == 0: {
+                            var randomBreakfastId = randomNumber.getRandomNumber(0, (dishSet['breakfasts'].length - 1));
+                            tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = dishSet['breakfasts'][randomBreakfastId];
+                            break;
+                        }
+                        case addDropChangeIndex[1] == 1: {
+                            var randomSecondBreakfastId = randomNumber.getRandomNumber(0, (dishSet['secondBreakfasts'].length - 1));
+                            tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = dishSet['secondBreakfasts'][randomSecondBreakfastId];
+                            break;
+                        }
+                        case addDropChangeIndex[1] == 2: {
+                            var randomLunchId = randomNumber.getRandomNumber(0, (dishSet['lunches'].length - 1));
+                            tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = dishSet['lunches'][randomLunchId];
+                            break;
+                        }
+                        case addDropChangeIndex[1] == 3: {
+                            var randomMeriendaId = randomNumber.getRandomNumber(0, (dishSet['meriendas'].length - 1));
+                            tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = dishSet['meriendas'][randomMeriendaId];
+                            break;
+                        }
+                        case addDropChangeIndex[1] == 4: {
+                            var randomDinnerId = randomNumber.getRandomNumber(0, (dishSet['dinners'].length - 1));
+                            tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = dishSet['dinners'][randomDinnerId];
+                            break;
+                        }
+                    }
+                }
+                neighbourhood.push(tempSolution);
+            }
+
+            var moveValues = {};
+
+            for (var tabu in atributesTabuList) {
+                if (atributesTabuList[tabu]) {
+                    delete atributesTabuList[tabu];
+                }
+            }
+
+            for (var index = 0; index < neighbourhood.length; index++) {
+                moveValues[index] = evaluate.evaluateSolution(neighbourhood[index], reqs, prefs, dishlist);
+            }
+
+            var moveSolutionKey = 0
+
+            for (var key in Object.keys(moveValues)) {
+                if (currentSolutionValue >= moveValues[key]) {
+                    if (checkSolutionCredibility(neighbourhood[key])) {
+                        currentSolutionValue = moveValues[key];
+                        moveSolutionKey = key
+                        solution = neighbourhood[key]
+                    }
+                }
+            }
+
+            var currentSolutionHash = crypto.createHash('md5').update(solution.join()).digest('hex');
+
+            solutionsTabuList[currentSolutionHash] = 50;
+
+            for (var tabu in solutionsTabuList) {
+                if (solutionsTabuList[tabu]) {
+                    solutionsTabuList[tabu] -= 1;
+                    if (solutionsTabuList[tabu] == 0) {
+                        delete solutionsTabuList[tabu];
+                    }
+                }
+            }
+
+            if (blocksCount == 5) {
+
+                console.log('wartosc najlepszego rozwiazania to = ' + evaluate.evaluateSolution(solution, reqs, prefs, dishlist));
+
+            } else if (blockIterationsCount === 500) {
+
+                blocksCount++;
+                getRow(0)                
+
+            } else {
+                optimizeSolutionBlock(blockIterationsCount+1);
+            }
+        }
+
     });
 
-    
+
+
+
 
     function checkSolutionCredibility(solution) {
 
@@ -135,6 +226,15 @@ exports.generatePartialFlaggedSolution = function (pool, reqs, allrgs, prefs, di
                 if (atributesTabuList.hasOwnProperty(solution[i][j])) {
                     return false;
                 }
+            }
+        }
+        return true;
+    }
+
+    function checkRowCredibility(row) {
+        for (var i = 0; i < row.length; i++) {
+            if (atributesTabuList.hasOwnProperty(row[i])) {
+                return false;
             }
         }
         return true;
