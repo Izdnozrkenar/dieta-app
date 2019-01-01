@@ -111,7 +111,7 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
             var swapChangeIndexFrom = [];
             var swapChangeIndexTo = [];
 
-            for (var q = 0; q < 2; q++) {
+            for (var q = 0; q < 5; q++) {
 
                 do {
                     swapChangeIndexFrom[q] = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
@@ -197,6 +197,10 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
 
             moveSolutionKey > possibleMovesRand.length ? totalSwapActionCount++ : totalAddDropActionCount++;
             searchIterations++;
+            if(moveSolutionKey < possibleMovesRand.length){
+                console.log('wybrany ruch ' + possibleMovesRand[moveSolutionKey][1] + possibleMovesRand[moveSolutionKey][2] + ' danie = ' + possibleMovesRand[moveSolutionKey][0])
+            }
+            
             return flaggedTabuSearch(neighbourhood[moveSolutionKey]);
 
         }
@@ -271,7 +275,7 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
 
     flaggedTabuEventEmitter.on('dishesID_received', () => {
 
-        pool.query('SELECT dshID FROM dishes ORDER BY dshEnergy DESC LIMIT 10')
+        pool.query('(SELECT dshID FROM dishes WHERE ((dshType/1000)>=1 AND (FLOOR((dshType/1000))%2=1)) ORDER BY dshEnergy DESC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/100)>=1 AND (FLOOR((dshType/100))%2=1)) ORDER BY dshEnergy DESC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/10)>=1 AND (FLOOR((dshType/10))%2=1)) ORDER BY dshEnergy DESC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/1)>=1 AND (FLOOR((dshType))%2=1)) ORDER BY dshEnergy DESC LIMIT 5)')
             .then(res => {
                 res.forEach(dish => {
                     flaggedDishesSet['richInEnergy'].push(dish.dshID);
@@ -279,56 +283,56 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
             })
 
 
-        pool.query('SELECT dshID FROM dishes ORDER BY dshEnergy ASC LIMIT 10')
+        pool.query('(SELECT dshID FROM dishes WHERE ((dshType/1000)>=1 AND (FLOOR((dshType/1000))%2=1)) ORDER BY dshEnergy ASC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/100)>=1 AND (FLOOR((dshType/100))%2=1)) ORDER BY dshEnergy ASC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/10)>=1 AND (FLOOR((dshType/10))%2=1)) ORDER BY dshEnergy ASC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/1)>=1 AND (FLOOR((dshType))%2=1)) ORDER BY dshEnergy ASC LIMIT 5)')
             .then(res => {
                 res.forEach(dish => {
                     flaggedDishesSet['notRichInEnergy'].push(dish.dshID);
                 })
             })
 
-        pool.query('SELECT dshID FROM dishes ORDER BY dshProtein DESC LIMIT 10')
+        pool.query('(SELECT dshID FROM dishes WHERE ((dshType/1000)>=1 AND (FLOOR((dshType/1000))%2=1)) ORDER BY dshProtein DESC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/100)>=1 AND (FLOOR((dshType/100))%2=1)) ORDER BY dshProtein DESC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/10)>=1 AND (FLOOR((dshType/10))%2=1)) ORDER BY dshProtein DESC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/1)>=1 AND (FLOOR((dshType))%2=1)) ORDER BY dshProtein DESC LIMIT 5)')
             .then(res => {
                 res.forEach(dish => {
                     flaggedDishesSet['richInProtein'].push(dish.dshID);
                 })
             })
-        pool.query('SELECT dshID FROM dishes ORDER BY dshProtein ASC LIMIT 10')
+        pool.query('(SELECT dshID FROM dishes WHERE ((dshType/1000)>=1 AND (FLOOR((dshType/1000))%2=1)) ORDER BY dshProtein ASC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/100)>=1 AND (FLOOR((dshType/100))%2=1)) ORDER BY dshProtein ASC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/10)>=1 AND (FLOOR((dshType/10))%2=1)) ORDER BY dshProtein ASC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/1)>=1 AND (FLOOR((dshType))%2=1)) ORDER BY dshProtein ASC LIMIT 5)')
             .then(res => {
                 res.forEach(dish => {
                     flaggedDishesSet['notRichInProtein'].push(dish.dshID);
                 })
             })
-        pool.query('SELECT dshID FROM dishes ORDER BY dshFat DESC LIMIT 10')
+        pool.query('(SELECT dshID FROM dishes WHERE ((dshType/1000)>=1 AND (FLOOR((dshType/1000))%2=1)) ORDER BY dshFat DESC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/100)>=1 AND (FLOOR((dshType/100))%2=1)) ORDER BY dshFat DESC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/10)>=1 AND (FLOOR((dshType/10))%2=1)) ORDER BY dshFat DESC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/1)>=1 AND (FLOOR((dshType))%2=1)) ORDER BY dshFat DESC LIMIT 5)')
             .then(res => {
                 res.forEach(dish => {
                     flaggedDishesSet['richInFat'].push(dish.dshID);
                 })
             })
-        pool.query('SELECT dshID FROM dishes ORDER BY dshFat ASC LIMIT 10')
+        pool.query('(SELECT dshID FROM dishes WHERE ((dshType/1000)>=1 AND (FLOOR((dshType/1000))%2=1)) ORDER BY dshFat ASC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/100)>=1 AND (FLOOR((dshType/100))%2=1)) ORDER BY dshFat ASC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/10)>=1 AND (FLOOR((dshType/10))%2=1)) ORDER BY dshFat ASC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/1)>=1 AND (FLOOR((dshType))%2=1)) ORDER BY dshFat ASC LIMIT 5)')
             .then(res => {
                 res.forEach(dish => {
                     flaggedDishesSet['notRichInFat'].push(dish.dshID);
                 })
             })
-        pool.query('SELECT dshID FROM dishes ORDER BY dshCarbohydrates DESC LIMIT 10')
+        pool.query('(SELECT dshID FROM dishes WHERE ((dshType/1000)>=1 AND (FLOOR((dshType/1000))%2=1)) ORDER BY dshCarbohydrates DESC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/100)>=1 AND (FLOOR((dshType/100))%2=1)) ORDER BY dshCarbohydrates DESC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/10)>=1 AND (FLOOR((dshType/10))%2=1)) ORDER BY dshCarbohydrates DESC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/1)>=1 AND (FLOOR((dshType))%2=1)) ORDER BY dshCarbohydrates DESC LIMIT 5)')
             .then(res => {
                 res.forEach(dish => {
                     flaggedDishesSet['richInCarbohydrates'].push(dish.dshID);
                 })
             })
-        pool.query('SELECT dshID FROM dishes ORDER BY dshCarbohydrates ASC LIMIT 10')
+        pool.query('(SELECT dshID FROM dishes WHERE ((dshType/1000)>=1 AND (FLOOR((dshType/1000))%2=1)) ORDER BY dshCarbohydrates ASC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/100)>=1 AND (FLOOR((dshType/100))%2=1)) ORDER BY dshCarbohydrates ASC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/10)>=1 AND (FLOOR((dshType/10))%2=1)) ORDER BY dshCarbohydrates ASC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/1)>=1 AND (FLOOR((dshType))%2=1)) ORDER BY dshCarbohydrates ASC LIMIT 5)')
             .then(res => {
                 res.forEach(dish => {
                     flaggedDishesSet['notRichInCarbohydrates'].push(dish.dshID);
                 })
             })
-        pool.query('SELECT dshID FROM dishes ORDER BY dshFiber DESC LIMIT 10')
+        pool.query('(SELECT dshID FROM dishes WHERE ((dshType/1000)>=1 AND (FLOOR((dshType/1000))%2=1)) ORDER BY dshFiber DESC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/100)>=1 AND (FLOOR((dshType/100))%2=1)) ORDER BY dshFiber DESC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/10)>=1 AND (FLOOR((dshType/10))%2=1)) ORDER BY dshFiber DESC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/1)>=1 AND (FLOOR((dshType))%2=1)) ORDER BY dshFiber DESC LIMIT 5)')
             .then(res => {
                 res.forEach(dish => {
                     flaggedDishesSet['richInFiber'].push(dish.dshID);
                 })
             })
-        pool.query('SELECT dshID FROM dishes ORDER BY dshFiber ASC LIMIT 10')
+        pool.query('(SELECT dshID FROM dishes WHERE ((dshType/1000)>=1 AND (FLOOR((dshType/1000))%2=1)) ORDER BY dshFiber DESC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/100)>=1 AND (FLOOR((dshType/100))%2=1)) ORDER BY dshFiber DESC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/10)>=1 AND (FLOOR((dshType/10))%2=1)) ORDER BY dshFiber DESC LIMIT 5) UNION (SELECT dshID FROM dishes WHERE ((dshType/1)>=1 AND (FLOOR((dshType))%2=1)) ORDER BY dshFiber DESC LIMIT 5)')
             .then(res => {
                 res.forEach(dish => {
                     flaggedDishesSet['notRichInFiber'].push(dish.dshID);

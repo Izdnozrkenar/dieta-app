@@ -243,7 +243,10 @@ exports.generateRandomSolution = function (pool, reqs, allrgs, prefs, dishlist, 
 
          (moveSolutionKey > maxAddDropMoves && moveSolutionKey != (maxAddDropMoves + maxSwapMoves + 1)) ? totalSwapActionCount++ : totalAddDropActionCount++;
          searchIterations++;
-         return randomTabuSearch(neighbourhood[moveSolutionKey], pmaxAddDropMoves, pmaxSwapMoves);
+         
+         setTimeout(() => {
+            return randomTabuSearch(neighbourhood[moveSolutionKey], pmaxAddDropMoves, pmaxSwapMoves);
+         }, 10);
 
       }
    }
