@@ -104,7 +104,7 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
             }
         }
 
-        for (var i = 0; i < 15 * (flagset.isMonotonous); i++) {
+        for (var i = 0; i < 10 * (flagset.isMonotonous); i++) {
 
             var tempSolution = JSON.parse(jsonSolution);
 

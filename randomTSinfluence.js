@@ -135,11 +135,11 @@ exports.generateRandomSolutionWithInfluenceMechanism = function (pool, reqs, all
 
                 do {
                     swapChangeIndexFrom[q] = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
-                } while (tempSolution[swapChangeIndexFrom[q][0]][swapChangeIndexFrom[q][1]])
+                } while (!tempSolution[swapChangeIndexFrom[q][0]][swapChangeIndexFrom[q][1]])
 
                 do {
                     swapChangeIndexTo[q] = [randomNumber.getRandomNumber(0, 29), swapChangeIndexFrom[q][1]];
-                } while (tempSolution[swapChangeIndexTo[q][0]][swapChangeIndexTo[q][1]])
+                } while (!tempSolution[swapChangeIndexTo[q][0]][swapChangeIndexTo[q][1]])
 
 
             }

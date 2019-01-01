@@ -17,7 +17,7 @@ dbUpdate.updateDishesDatabase(pool, conn);
 
 var preferences = {}
 
-var requirements = evaluator.calculateRequirements(1, 33, 2.3, 60);
+var requirements = evaluator.calculateRequirements(1, 25, 1.4, 60);
 
 
 pool.query('SELECT dshID, dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFiber FROM dishes')
@@ -27,10 +27,10 @@ pool.query('SELECT dshID, dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFi
             dishList[values.dshID]=values;
             preferences[values.dshID] = 0;
         })
-        //var rndTSinflu = randomTSinfluence.generateRandomSolutionWithInfluenceMechanism(pool, requirements, [], preferences, dishList, 500, 20, 10, 1);
-        //var rndTS = randomTS.generateRandomSolution(pool, requirements, [], preferences, dishList, 20, 20, 10);
-        //var flgTS = flaggedTS.generateFlaggedSolution(pool,requirements,[0],preferences,dishList,500);
-        //var prndTS = partialRandomTS.generatePartialRandomSolution(pool,requirements,[0],preferences,dishList,10)
-        var pflgTS = partialflaggedTS.generatePartialFlaggedSolution(pool,requirements,[0],preferences,dishList,100)
+        //var rndTSinflu = randomTSinfluence.generateRandomSolutionWithInfluenceMechanism(pool, requirements, [], preferences, dishList, 200, 20, 10, 3);
+        var rndTS = randomTS.generateRandomSolution(pool, requirements, [], preferences, dishList, 100, 20, 10);
+        //var flgTS = flaggedTS.generateFlaggedSolution(pool,requirements,[0],preferences,dishList,100);
+        var prndTS = partialRandomTS.generatePartialRandomSolution(pool,requirements,[0],preferences,dishList,20)
+        //var pflgTS = partialflaggedTS.generatePartialFlaggedSolution(pool,requirements,[0],preferences,dishList,20)
 
     })

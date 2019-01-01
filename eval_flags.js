@@ -40,11 +40,11 @@ exports.getFlagsForSoltuion = function (solution, reqs, preferences, dishlist) {
     });
 
     var setNutrientsFlags = function () {
-        var energyDemand = ((reqs.energy * 30) - solEnergy) / (reqs.energy * 30);
-        var proteinDemand = ((reqs.protein * 30) - solProtein) / (reqs.protein * 30);
-        var fatDemand = ((reqs.fat * 30) - solFat) / (reqs.fat * 30);
-        var carbohydratesDemand = ((reqs.carbohydrates * 30) - solCarbohydrates) / (reqs.carbohydrates * 30);
-        var fiberDemand = ((reqs.fiber * 30) - solFiber) / (reqs.fiber * 30);
+        var energyDemand = ((reqs.energy * solution.length) - solEnergy) / (reqs.energy * solution.length);
+        var proteinDemand = ((reqs.protein * solution.length) - solProtein) / (reqs.protein * solution.length);
+        var fatDemand = ((reqs.fat * solution.length) - solFat) / (reqs.fat * solution.length);
+        var carbohydratesDemand = ((reqs.carbohydrates * solution.length) - solCarbohydrates) / (reqs.carbohydrates * solution.length);
+        var fiberDemand = ((reqs.fiber * solution.length) - solFiber) / (reqs.fiber * solution.length);
 
         if (energyDemand > 0.3) { flagset.needsMoreEnergy = true; }
         if (energyDemand < -0.3) { flagset.needsLessEnergy = true; }

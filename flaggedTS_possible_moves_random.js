@@ -6,95 +6,6 @@ exports.getPossbieMovesForFlagsRandomly = function (solution, flagset, dishSet, 
     var possibleMoves = []
 
     if (flagset.needsMoreEnergy) {
-
-        for(var i = 0; i < flaggedDishlists['richInEnergy'].length; i++){
-            var attempts = 0;
-            switch (true) {
-                case dishSet['breakfasts'].includes(flaggedDishlists['richInEnergy'][i]): {
-                    do{
-                        var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
-                        attempts++;
-                    }while(flaggedDishlists['richInEnergy'].includes(solution[changeIndex][0]) && attempts < 10)
-                    possibleMoves.push([flaggedDishlists['richInEnergy'][i],changeIndex,2])
-                    break;
-                }
-                case dishSet['secondBreakfasts'].includes(flaggedDishlists['richInEnergy'][i]): {
-                    do{
-                        var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
-                    }while(flaggedDishlists['richInEnergy'].includes(solution[changeIndex][0]) && attempts < 10)
-                    possibleMoves.push([flaggedDishlists['richInEnergy'][i],changeIndex,2])
-                    break;
-                }
-                case dishSet['lunches'].includes(flaggedDishlists['richInEnergy'][i]): {
-                    do{
-                        var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
-                    }while(flaggedDishlists['richInEnergy'].includes(solution[changeIndex][2] && attempts < 10))
-                    possibleMoves.push([flaggedDishlists['richInEnergy'][i],changeIndex,2])
-                    break;
-                }
-                case dishSet['meriendas'].includes(flaggedDishlists['richInEnergy'][i]): {
-                    do{
-                        var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
-                    }while(flaggedDishlists['richInEnergy'].includes(solution[changeIndex][3]))
-                    possibleMoves.push([flaggedDishlists['richInEnergy'][i],changeIndex,2])
-                    break;
-                }
-                case dishSet['dinners'].includes(flaggedDishlists['richInEnergy'][i]): {
-                    do{
-                        var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
-                    }while(flaggedDishlists['richInEnergy'].includes(solution[changeIndex][4]))
-                    possibleMoves.push([flaggedDishlists['richInEnergy'][i],changeIndex,2])
-                    break;
-                }
-            }
-        }
-    }
-
-    if (flagset.needsLessEnergy) {
-
-        for(var i = 0; i < flaggedDishlists['notRichInEnergy'].length; i++){
-            var attempts = 0;
-            switch (true) {
-                case dishSet['breakfasts'].includes(flaggedDishlists['notRichInEnergy'][i]): {
-                    do{
-                        var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
-                    }while(flaggedDishlists['notRichInEnergy'].includes(solution[changeIndex][0]))
-                    possibleMoves.push([flaggedDishlists['notRichInEnergy'][i],changeIndex,2])
-                    break;
-                }
-                case dishSet['secondBreakfasts'].includes(flaggedDishlists['notRichInEnergy'][i]): {
-                    do{
-                        var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
-                    }while(flaggedDishlists['notRichInEnergy'].includes(solution[changeIndex][1] && attempts < 10))
-                    possibleMoves.push([flaggedDishlists['notRichInEnergy'][i],changeIndex,2])
-                    break;
-                }
-                case dishSet['lunches'].includes(flaggedDishlists['notRichInEnergy'][i]): {
-                    do{
-                        var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
-                    }while(flaggedDishlists['notRichInEnergy'].includes(solution[changeIndex][2] && attempts < 10))
-                    possibleMoves.push([flaggedDishlists['notRichInEnergy'][i],changeIndex,2])
-                    break;
-                }
-                case dishSet['meriendas'].includes(flaggedDishlists['notRichInEnergy'][i]): {
-                    do{
-                        var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
-                    }while(flaggedDishlists['notRichInEnergy'].includes(solution[changeIndex][3]))
-                    possibleMoves.push([flaggedDishlists['notRichInEnergy'][i],changeIndex,2])
-                    break;
-                }
-                case dishSet['dinners'].includes(flaggedDishlists['notRichInEnergy'][i]): {
-                    do{
-                        var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
-                    }while(flaggedDishlists['notRichInEnergy'].includes(solution[changeIndex][4]))
-                    possibleMoves.push([flaggedDishlists['notRichInEnergy'][i],changeIndex,2])
-                    break;
-                }
-            }
-        }
-    }
-
-    if (flagset.needsMoreEnergy) {
         
         for(var i = 0; i < flaggedDishlists['richInEnergy'].length; i++){
             var attempts = 0;
@@ -123,14 +34,14 @@ exports.getPossbieMovesForFlagsRandomly = function (solution, flagset, dishSet, 
                 case dishSet['meriendas'].includes(flaggedDishlists['richInEnergy'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
-                    }while(flaggedDishlists['richInEnergy'].includes(solution[changeIndex][3]))
+                    }while(flaggedDishlists['richInEnergy'].includes(solution[changeIndex][3] && attempts < 10))
                     possibleMoves.push([flaggedDishlists['richInEnergy'][i],changeIndex,2])
                     break;
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['richInEnergy'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
-                    }while(flaggedDishlists['richInEnergy'].includes(solution[changeIndex][4]))
+                    }while(flaggedDishlists['richInEnergy'].includes(solution[changeIndex][4] && attempts < 10))
                     possibleMoves.push([flaggedDishlists['richInEnergy'][i],changeIndex,2])
                     break;
                 }
@@ -167,14 +78,14 @@ exports.getPossbieMovesForFlagsRandomly = function (solution, flagset, dishSet, 
                 case dishSet['meriendas'].includes(flaggedDishlists['notRichInEnergy'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
-                    }while(flaggedDishlists['notRichInEnergy'].includes(solution[changeIndex][3]))
+                    }while(flaggedDishlists['notRichInEnergy'].includes(solution[changeIndex][3] && attempts < 10))
                     possibleMoves.push([flaggedDishlists['notRichInEnergy'][i],changeIndex,2])
                     break;
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['notRichInEnergy'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
-                    }while(flaggedDishlists['notRichInEnergy'].includes(solution[changeIndex][4]))
+                    }while(flaggedDishlists['notRichInEnergy'].includes(solution[changeIndex][4] && attempts < 10))
                     possibleMoves.push([flaggedDishlists['notRichInEnergy'][i],changeIndex,2])
                     break;
                 }
@@ -211,14 +122,14 @@ exports.getPossbieMovesForFlagsRandomly = function (solution, flagset, dishSet, 
                 case dishSet['meriendas'].includes(flaggedDishlists['richInProtein'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
-                    }while(flaggedDishlists['richInProtein'].includes(solution[changeIndex][3]))
+                    }while(flaggedDishlists['richInProtein'].includes(solution[changeIndex][3] && attempts < 10))
                     possibleMoves.push([flaggedDishlists['richInProtein'][i],changeIndex,2])
                     break;
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['richInProtein'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
-                    }while(flaggedDishlists['richInProtein'].includes(solution[changeIndex][4]))
+                    }while(flaggedDishlists['richInProtein'].includes(solution[changeIndex][4] && attempts < 10))
                     possibleMoves.push([flaggedDishlists['richInProtein'][i],changeIndex,2])
                     break;
                 }
@@ -235,35 +146,35 @@ exports.getPossbieMovesForFlagsRandomly = function (solution, flagset, dishSet, 
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['notRichInProtein'].includes(solution[changeIndex][0] && attempts < 10))
-                    possibleMoves.push([flaggedDishlists['notRichInProtein'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['notRichInProtein'][i],changeIndex,0,'lp'])
                     break;
                 }
                 case dishSet['secondBreakfasts'].includes(flaggedDishlists['notRichInProtein'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['notRichInProtein'].includes(solution[changeIndex][1] && attempts < 10))
-                    possibleMoves.push([flaggedDishlists['notRichInProtein'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['notRichInProtein'][i],changeIndex,1,'lp'])
                     break;
                 }
                 case dishSet['lunches'].includes(flaggedDishlists['notRichInProtein'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['notRichInProtein'].includes(solution[changeIndex][2] && attempts < 10))
-                    possibleMoves.push([flaggedDishlists['notRichInProtein'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['notRichInProtein'][i],changeIndex,2,'lp'])
                     break;
                 }
                 case dishSet['meriendas'].includes(flaggedDishlists['notRichInProtein'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
-                    }while(flaggedDishlists['notRichInProtein'].includes(solution[changeIndex][3]))
-                    possibleMoves.push([flaggedDishlists['notRichInProtein'][i],changeIndex,2])
+                    }while(flaggedDishlists['notRichInProtein'].includes(solution[changeIndex][3] && attempts < 10))
+                    possibleMoves.push([flaggedDishlists['notRichInProtein'][i],changeIndex,3,'lp'])
                     break;
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['notRichInProtein'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
-                    }while(flaggedDishlists['notRichInProtein'].includes(solution[changeIndex][4]))
-                    possibleMoves.push([flaggedDishlists['notRichInProtein'][i],changeIndex,2])
+                    }while(flaggedDishlists['notRichInProtein'].includes(solution[changeIndex][4] && attempts < 10))
+                    possibleMoves.push([flaggedDishlists['notRichInProtein'][i],changeIndex,4,'lp'])
                     break;
                 }
             }
@@ -279,14 +190,14 @@ exports.getPossbieMovesForFlagsRandomly = function (solution, flagset, dishSet, 
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['richInFat'].includes(solution[changeIndex][0] && attempts < 10))
-                    possibleMoves.push([flaggedDishlists['richInFat'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['richInFat'][i],changeIndex,0])
                     break;
                 }
                 case dishSet['secondBreakfasts'].includes(flaggedDishlists['richInFat'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['richInFat'].includes(solution[changeIndex][1] && attempts < 10))
-                    possibleMoves.push([flaggedDishlists['richInFat'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['richInFat'][i],changeIndex,1])
                     break;
                 }
                 case dishSet['lunches'].includes(flaggedDishlists['richInFat'][i]): {
@@ -300,14 +211,14 @@ exports.getPossbieMovesForFlagsRandomly = function (solution, flagset, dishSet, 
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['richInFat'].includes(solution[changeIndex][3]))
-                    possibleMoves.push([flaggedDishlists['richInFat'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['richInFat'][i],changeIndex,3])
                     break;
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['richInFat'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['richInFat'].includes(solution[changeIndex][4]))
-                    possibleMoves.push([flaggedDishlists['richInFat'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['richInFat'][i],changeIndex,4])
                     break;
                 }
             }
@@ -323,14 +234,14 @@ exports.getPossbieMovesForFlagsRandomly = function (solution, flagset, dishSet, 
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['notRichInFat'].includes(solution[changeIndex][0] && attempts < 10))
-                    possibleMoves.push([flaggedDishlists['notRichInFat'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['notRichInFat'][i],changeIndex,0])
                     break;
                 }
                 case dishSet['secondBreakfasts'].includes(flaggedDishlists['notRichInFat'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['notRichInFat'].includes(solution[changeIndex][1] && attempts < 10))
-                    possibleMoves.push([flaggedDishlists['notRichInFat'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['notRichInFat'][i],changeIndex,1])
                     break;
                 }
                 case dishSet['lunches'].includes(flaggedDishlists['notRichInFat'][i]): {
@@ -344,14 +255,14 @@ exports.getPossbieMovesForFlagsRandomly = function (solution, flagset, dishSet, 
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['notRichInFat'].includes(solution[changeIndex][3]))
-                    possibleMoves.push([flaggedDishlists['notRichInFat'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['notRichInFat'][i],changeIndex,3])
                     break;
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['notRichInFat'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['notRichInFat'].includes(solution[changeIndex][4]))
-                    possibleMoves.push([flaggedDishlists['notRichInFat'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['notRichInFat'][i],changeIndex,4])
                     break;
                 }
             }
@@ -367,14 +278,14 @@ exports.getPossbieMovesForFlagsRandomly = function (solution, flagset, dishSet, 
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['richInCarbohydrates'].includes(solution[changeIndex][0] && attempts < 10))
-                    possibleMoves.push([flaggedDishlists['richInCarbohydrates'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['richInCarbohydrates'][i],changeIndex,0])
                     break;
                 }
                 case dishSet['secondBreakfasts'].includes(flaggedDishlists['richInCarbohydrates'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['richInCarbohydrates'].includes(solution[changeIndex][1] && attempts < 10))
-                    possibleMoves.push([flaggedDishlists['richInCarbohydrates'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['richInCarbohydrates'][i],changeIndex,1])
                     break;
                 }
                 case dishSet['lunches'].includes(flaggedDishlists['richInCarbohydrates'][i]): {
@@ -388,14 +299,14 @@ exports.getPossbieMovesForFlagsRandomly = function (solution, flagset, dishSet, 
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['richInCarbohydrates'].includes(solution[changeIndex][3]))
-                    possibleMoves.push([flaggedDishlists['richInCarbohydrates'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['richInCarbohydrates'][i],changeIndex,3])
                     break;
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['richInCarbohydrates'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['richInCarbohydrates'].includes(solution[changeIndex][4]))
-                    possibleMoves.push([flaggedDishlists['richInCarbohydrates'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['richInCarbohydrates'][i],changeIndex,4])
                     break;
                 }
             }
@@ -411,14 +322,14 @@ exports.getPossbieMovesForFlagsRandomly = function (solution, flagset, dishSet, 
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['notRichInCarbohydrates'].includes(solution[changeIndex][0] && attempts < 10))
-                    possibleMoves.push([flaggedDishlists['notRichInCarbohydrates'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['notRichInCarbohydrates'][i],changeIndex,0])
                     break;
                 }
                 case dishSet['secondBreakfasts'].includes(flaggedDishlists['notRichInCarbohydrates'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['notRichInCarbohydrates'].includes(solution[changeIndex][1] && attempts < 10))
-                    possibleMoves.push([flaggedDishlists['notRichInCarbohydrates'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['notRichInCarbohydrates'][i],changeIndex,1])
                     break;
                 }
                 case dishSet['lunches'].includes(flaggedDishlists['notRichInCarbohydrates'][i]): {
@@ -432,14 +343,14 @@ exports.getPossbieMovesForFlagsRandomly = function (solution, flagset, dishSet, 
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['notRichInCarbohydrates'].includes(solution[changeIndex][3]))
-                    possibleMoves.push([flaggedDishlists['notRichInCarbohydrates'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['notRichInCarbohydrates'][i],changeIndex,3])
                     break;
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['notRichInCarbohydrates'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['notRichInCarbohydrates'].includes(solution[changeIndex][4]))
-                    possibleMoves.push([flaggedDishlists['notRichInCarbohydrates'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['notRichInCarbohydrates'][i],changeIndex,4])
                     break;
                 }
             }
@@ -499,14 +410,14 @@ exports.getPossbieMovesForFlagsRandomly = function (solution, flagset, dishSet, 
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['notRichInFiber'].includes(solution[changeIndex][0] && attempts < 10))
-                    possibleMoves.push([flaggedDishlists['notRichInFiber'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['notRichInFiber'][i],changeIndex,0])
                     break;
                 }
                 case dishSet['secondBreakfasts'].includes(flaggedDishlists['notRichInFiber'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['notRichInFiber'].includes(solution[changeIndex][1] && attempts < 10))
-                    possibleMoves.push([flaggedDishlists['notRichInFiber'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['notRichInFiber'][i],changeIndex,1])
                     break;
                 }
                 case dishSet['lunches'].includes(flaggedDishlists['notRichInFiber'][i]): {
@@ -520,14 +431,14 @@ exports.getPossbieMovesForFlagsRandomly = function (solution, flagset, dishSet, 
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['notRichInFiber'].includes(solution[changeIndex][3] && attempts < 10))
-                    possibleMoves.push([flaggedDishlists['notRichInFiber'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['notRichInFiber'][i],changeIndex,3])
                     break;
                 }
                 case dishSet['dinners'].includes(flaggedDishlists['notRichInFiber'][i]): {
                     do{
                         var changeIndex = randomNumber.getRandomNumber(0, (solution.length-1))
                     }while(flaggedDishlists['notRichInFiber'].includes(solution[changeIndex][4] && attempts < 10))
-                    possibleMoves.push([flaggedDishlists['notRichInFiber'][i],changeIndex,2])
+                    possibleMoves.push([flaggedDishlists['notRichInFiber'][i],changeIndex,4])
                     break;
                 }
             }

@@ -202,8 +202,7 @@ exports.generatePartialFlaggedSolution = function (pool, reqs, allrgs, prefs, di
                 }
             }
             if (blockIterationsCount == (iterations + 50)) {
-
-                console.log(solution);
+                
                 console.log(evaluate.evaluateSolution(solution, reqs, prefs, dishlist))
 
             } else if (blocksCount == 5) {
@@ -217,10 +216,6 @@ exports.generatePartialFlaggedSolution = function (pool, reqs, allrgs, prefs, di
 
             } else {
 
-                // if(moveSolutionKey < possibleMovesRand.length){
-                //     console.log('wybrany ruch ' + possibleMovesRand[moveSolutionKey][1] + possibleMovesRand[moveSolutionKey][2] + ' danie = ' + possibleMovesRand[moveSolutionKey][0])
-                //     console.log(flagset)
-                // }
                 setTimeout(() => {
                     optimizeSolutionBlock(blockIterationsCount + 1, false);
                 }, 1);
