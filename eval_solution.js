@@ -41,11 +41,11 @@ module.exports = exports = function (solution, pool, reqs, callback) {
     });
 
     var calculateNutrients = function () {
-        var energyDemand = Math.abs(((reqs.energy * 30) - solEnergy) / (reqs.energy * 30));
-        var proteinDemand = Math.abs(((reqs.protein * 30) - solProtein) / (reqs.protein * 30));
-        var fatDemand = Math.abs(((reqs.fat * 30) - solFat) / (reqs.fat * 30));
-        var carbohydratesDemand = Math.abs(((reqs.carbohydrates * 30) - solCarbohydrates) / (reqs.carbohydrates * 30));
-        var fiberDemand = Math.abs(((reqs.fiber * 30) - solFiber) / (reqs.fiber * 30));
+        var energyDemand = Math.abs(((reqs.energy * solution.length) - solEnergy) / (reqs.energy * solution.length));
+        var proteinDemand = Math.abs(((reqs.protein * solution.length) - solProtein) / (reqs.protein * solution.length));
+        var fatDemand = Math.abs(((reqs.fat * solution.length) - solFat) / (reqs.fat * solution.length));
+        var carbohydratesDemand = Math.abs(((reqs.carbohydrates * solution.length) - solCarbohydrates) / (reqs.carbohydrates * solution.length));
+        var fiberDemand = Math.abs(((reqs.fiber * solution.length) - solFiber) / (reqs.fiber * solution.length));
 
         //console.log('zapotrzebowanie na energie = ' + energyDemand + '\nzapotrzebowanie na bialko = ' + proteinDemand + '\nzapotrzebowanie na tłuszcz = ' + fatDemand + '\nzapotrzebowanie na węglowodany = ' + carbohydratesDemand + '\nzapotrzebowanie na blonnik = ' + fiberDemand);
 
@@ -55,9 +55,9 @@ module.exports = exports = function (solution, pool, reqs, callback) {
 
     var evaluateMonnotony = function () {
 
-        for (var i = 0; i < 30; i++) {
+        for (var i = 0; i < solution.length; i++) {
             solution[i].forEach(dish => {
-                for (var j = i + 1; j < (i + 4) && j < 30; j++) {
+                for (var j = i + 1; j < (i + 4) && j < solution.length; j++) {
                     if (solution[j].includes(dish) && dish!==null) {
                         monotonnyScore++;
                         break;

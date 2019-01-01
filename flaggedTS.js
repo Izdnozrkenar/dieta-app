@@ -197,10 +197,6 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
 
             moveSolutionKey > possibleMovesRand.length ? totalSwapActionCount++ : totalAddDropActionCount++;
             searchIterations++;
-            if(moveSolutionKey < possibleMovesRand.length){
-                console.log('wybrany ruch ' + possibleMovesRand[moveSolutionKey][1] + possibleMovesRand[moveSolutionKey][2] + ' danie = ' + possibleMovesRand[moveSolutionKey][0])
-            }
-            
             return flaggedTabuSearch(neighbourhood[moveSolutionKey]);
 
         }

@@ -31,6 +31,6 @@ pool.query('SELECT dshID, dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFi
         //var rndTS = randomTS.generateRandomSolution(pool, requirements, [], preferences, dishList, 20, 20, 10);
         //var flgTS = flaggedTS.generateFlaggedSolution(pool,requirements,[0],preferences,dishList,500);
         //var prndTS = partialRandomTS.generatePartialRandomSolution(pool,requirements,[0],preferences,dishList,10)
-        var pflgTS = partialflaggedTS.generatePartialFlaggedSolution(pool,requirements,[0],preferences,dishList,10)
+        var pflgTS = partialflaggedTS.generatePartialFlaggedSolution(pool,requirements,[0],preferences,dishList,100)
 
     })
