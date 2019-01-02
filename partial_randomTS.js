@@ -2,8 +2,8 @@
 const events = require('events');
 const randomNumber = require('./randomNumberGenerator');
 const crypto = require('crypto');
-var evaluate = require('./eval_solution_sync');
-var evalPartial = require('./eval_solution_partial_sync')
+var evaluate = require('./eval_functions/eval_solution_sync');
+var evalPartial = require('./eval_functions/eval_solution_partial_sync')
 
 var pflaggedTabuEventEmitter = new events.EventEmitter();
 
@@ -105,7 +105,7 @@ exports.generatePartialRandomSolution = function (pool, reqs, allrgs, prefs, dis
                 atributesTabuList[row[moveSolutionKey][index]] = 3;
             }
 
-            if (rowsCount == 6) {
+            if (rowsCount == 5) {
                 optimizeSolutionBlock(0,false)
             } else {
                 solution.push(row[moveSolutionKey]);

@@ -5,8 +5,9 @@ const randomTSinfluence = require('./randomTSinfluence');
 const flaggedTS = require('./flaggedTS');
 const partialRandomTS = require('./partial_randomTS')
 const partialflaggedTS = require('./partial_flaggedTS')
+const strategicOscilationTS = require('./strategic_oscilationTS')
 const dbUpdate = require('./databaseStaticUpdate');
-const evaluator = require('./eval_condidtions')
+const evaluator = require('./eval_functions/eval_condidtions')
 
 
 var dishList = {};
@@ -34,10 +35,11 @@ pool.query('SELECT dshID, dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFi
             dishList[values.dshID]=values;
             preferences[values.dshID] = 0;
         })
-        //var rndTSinflu = randomTSinfluence.generateRandomSolutionWithInfluenceMechanism(pool, requirements, [], preferences, dishList, 200, 20, 10, 3);
-        //var rndTS = randomTS.generateRandomSolution(pool, requirements, [], preferences, dishList, 100, 20, 300);
-        //var flgTS = flaggedTS.generateFlaggedSolution(pool,requirements,[0],preferences,dishList,300);
-        var prndTS = partialRandomTS.generatePartialRandomSolution(pool,requirements,[0],preferences,dishList,20)
-        //var pflgTS = partialflaggedTS.generatePartialFlaggedSolution(pool,requirements,[0],preferences,dishList,20)
+        //var rndTSinflu = randomTSinfluence.generateRandomSolutionWithInfluenceMechanism(pool, requirements, [], preferences, dishList, 20, 20, 10, 3);
+        //var rndTS = randomTS.generateRandomSolution(pool, requirements, [], preferences, dishList, 1000, 20, 10);
+        //var flgTS = flaggedTS.generateFlaggedSolution(pool,requirements,[0],preferences,dishList,1000);
+        //var prndTS = partialRandomTS.generatePartialRandomSolution(pool,requirements,[0],preferences,dishList,10)
+        //var pflgTS = partialflaggedTS.generatePartialFlaggedSolution(pool,requirements,[0],preferences,dishList,10)
+        //var soTS = strategicOscilationTS.generateStrategicOscilationSolution(pool,requirements,[0],preferences,dishList,1,2);
 
     })

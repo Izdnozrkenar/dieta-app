@@ -2,7 +2,7 @@
 const events = require('events');
 const randomNumber = require('./randomNumberGenerator');
 const crypto = require('crypto');
-var evaluate = require('./eval_solution_sync');
+var evaluate = require('./eval_functions/eval_solution_sync');
 
 var randomTabuEventEmitter = new events.EventEmitter();
 
