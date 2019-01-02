@@ -322,6 +322,7 @@ exports.generateStrategicOscilationSolution = function (pool, reqs, allrgs, pref
             if (periodCount == period) {
 
                 console.log(evaluate.evaluateSolution(bestSolution, reqs, prefs, dishlist))
+                console.log('w okresie ' + bestSolutionPeriod)
 
             } else if (blockIterationsCount === iterations && risingEdge) {
 
