@@ -39,7 +39,7 @@ exports.generateStrategicOscilationSolution = function (pool, reqs, allrgs, pref
 
         var bestSolution = [];
         var bestSolutionValue = 0;
-        var bestSolutionIteration = 0;
+        var bestSolutionPeriod = 0;
 
         var solution = [];
         var risingEdge = true;
@@ -134,21 +134,21 @@ exports.generateStrategicOscilationSolution = function (pool, reqs, allrgs, pref
         };
 
         function removeRow(rowsCount) {
-
+            
             var moveValues = {};
 
-            var removeRow = [];
+            var removeRowMoves = [];
 
             for (var i = 0; i < solution.length; i++) {
 
                 var tempSolution = JSON.parse(JSON.stringify(solution));
                 tempSolution.splice(i, 1)
 
-                removeRow.push(tempSolution);
+                removeRowMoves.push(tempSolution);
             }
 
-            for (var index = 0; index < removeRow.length; index++) {
-                moveValues[index] = evaluate.evaluateSolution(removeRow[index], reqs, prefs, dishlist);
+            for (var index = 0; index < removeRowMoves.length; index++) {
+                moveValues[index] = evaluate.evaluateSolution(removeRowMoves[index], reqs, prefs, dishlist);
             }
 
             var currentSolutionValue = moveValues[0];
@@ -156,7 +156,7 @@ exports.generateStrategicOscilationSolution = function (pool, reqs, allrgs, pref
 
             for (var key in Object.keys(moveValues)) {
                 if (currentSolutionValue >= moveValues[key]) {
-                    if (checkRowCredibility(row[key])) {
+                    if (checkRowCredibility(removeRowMoves[key])) {
                         currentSolutionValue = moveValues[key];
                         moveSolutionKey = key;
                     }
@@ -176,31 +176,33 @@ exports.generateStrategicOscilationSolution = function (pool, reqs, allrgs, pref
                 }
             }
 
-            if (rowsCount == 14) {
+            solution.splice(moveSolutionKey,1);
 
-                risingEdge = false;
-                fallingEdge = true;
-                optimizeSolutionBlock(0, false);
+            if (rowsCount == 16) {
 
-            } else if (rowsCount == 29) {
-
-                optimizeSolutionBlock(0, true);
-
-            } else if (rowsCount == 44) {
-
+                periodCount++;
                 risingEdge = true;
                 fallingEdge = false;
                 optimizeSolutionBlock(0, false);
 
+            } else if (rowsCount == 31) {
+
+                optimizeSolutionBlock(0, true);
+
             } else {
 
-                solution.push(removeRow[moveSolutionKey]);
-                getRow(--rowsCount)
+                removeRow(--rowsCount)
 
             }
         };
 
         function optimizeSolutionBlock(blockIterationsCount, allowSwaps) {
+
+            if(periodCount==0 && allowSwaps){
+                bestSolution=JSON.parse(JSON.stringify(solution))
+                bestSolutionValue=evaluate.evaluateSolution(bestSolution, reqs, prefs, dishlist);
+                bestSolutionPeriod=periodCount;
+            }
 
             var neighbourhood = [];
             var currentSolutionValue = evaluate.evaluateSolution(solution, reqs, prefs, dishlist);
@@ -256,11 +258,11 @@ exports.generateStrategicOscilationSolution = function (pool, reqs, allrgs, pref
                 for (var q = 0; q < 2; q++) {
 
                     do {
-                        swapChangeIndexFrom[q] = [randomNumber.getRandomNumber(0, tempSolution.length-1), randomNumber.getRandomNumber(0, 4)];
+                        swapChangeIndexFrom[q] = [randomNumber.getRandomNumber(0, tempSolution.length - 1), randomNumber.getRandomNumber(0, 4)];
                     } while (!tempSolution[swapChangeIndexFrom[q][0]][swapChangeIndexFrom[q][1]])
 
                     do {
-                        swapChangeIndexTo[q] = [randomNumber.getRandomNumber(0, tempSolution.length-1), swapChangeIndexFrom[q][1]];
+                        swapChangeIndexTo[q] = [randomNumber.getRandomNumber(0, tempSolution.length - 1), swapChangeIndexFrom[q][1]];
                     } while (!tempSolution[swapChangeIndexTo[q][0]][swapChangeIndexTo[q][1]])
                 }
 
@@ -299,7 +301,7 @@ exports.generateStrategicOscilationSolution = function (pool, reqs, allrgs, pref
                 }
                 if (bestSolutionValue > currentSolutionValue && allowSwaps) {
                     bestSolutionValue = currentSolutionValue;
-                    bestSolutionIteration = searchIterations;
+                    bestSolutionPeriod = periodCount;
                     bestSolution = JSON.parse(JSON.stringify(neighbourhood[key]))
                 }
             }
@@ -317,13 +319,9 @@ exports.generateStrategicOscilationSolution = function (pool, reqs, allrgs, pref
                 }
             }
 
-            if(risingEdge && !allowSwaps){
-                period++;
-            }
-
             if (periodCount == period) {
 
-                console.log(evaluate.evaluateSolution(solution, reqs, prefs, dishlist))
+                console.log(evaluate.evaluateSolution(bestSolution, reqs, prefs, dishlist))
 
             } else if (blockIterationsCount === iterations && risingEdge) {
 
@@ -338,10 +336,8 @@ exports.generateStrategicOscilationSolution = function (pool, reqs, allrgs, pref
                 setTimeout(() => {
                     optimizeSolutionBlock(blockIterationsCount + 1, false);
                 }, 1);
-
             }
         }
-
     });
 
 

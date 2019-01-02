@@ -40,6 +40,6 @@ pool.query('SELECT dshID, dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFi
         //var flgTS = flaggedTS.generateFlaggedSolution(pool,requirements,[0],preferences,dishList,1000);
         //var prndTS = partialRandomTS.generatePartialRandomSolution(pool,requirements,[0],preferences,dishList,10)
         //var pflgTS = partialflaggedTS.generatePartialFlaggedSolution(pool,requirements,[0],preferences,dishList,10)
-        //var soTS = strategicOscilationTS.generateStrategicOscilationSolution(pool,requirements,[0],preferences,dishList,1,2);
+        var soTS = strategicOscilationTS.generateStrategicOscilationSolution(pool,requirements,[0],preferences,dishList,5,50);
 
     })
