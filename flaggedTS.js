@@ -133,6 +133,47 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
             neighbourhood.push(tempSolution);
         }
 
+        for (var i = 0; i < (10*flagset.allowRandomMoves); i++) {
+
+            var tempSolution = JSON.parse(jsonSolution);
+   
+            /* generating random choice */
+   
+            for (var j = 0; j < 3; j++) {
+   
+               var addDropChangeIndex = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
+   
+               switch (true) {
+                  case addDropChangeIndex[1] == 0: {
+                     var randomBreakfastId = randomNumber.getRandomNumber(0, breakfastIdlist.length - 1);
+                     tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = breakfastIdlist[randomBreakfastId];
+                     break;
+                  }
+                  case addDropChangeIndex[1] == 1: {
+                     var randomSecondBreakfastId = randomNumber.getRandomNumber(0, secondBreakfastIdlist.length - 1);
+                     tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = secondBreakfastIdlist[randomSecondBreakfastId];
+                     break;
+                  }
+                  case addDropChangeIndex[1] == 2: {
+                     var randomLunchId = randomNumber.getRandomNumber(0, lunchIdlist.length - 1);
+                     tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = lunchIdlist[randomLunchId];
+                     break;
+                  }
+                  case addDropChangeIndex[1] == 3: {
+                     var randomMeriendaId = randomNumber.getRandomNumber(0, meriendaIdlist.length - 1);
+                     tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = meriendaIdlist[randomMeriendaId];
+                     break;
+                  }
+                  case addDropChangeIndex[1] == 4: {
+                     var randomDinnerId = randomNumber.getRandomNumber(0, dinnerIdlist.length - 1);
+                     tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = dinnerIdlist[randomDinnerId];
+                     break;
+                  }
+               }
+            }
+            neighbourhood[i] = tempSolution;
+         }
+
         /* evaluate neighbourhood */
 
         for (var index = 0; index < neighbourhood.length; index++) {
@@ -181,8 +222,6 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
 
             console.log('wartosc najlepszego rozwiazania flagged = ' + bestSolutionValue);
             console.log(bestSolutionIteration);
-            console.log(totalSwapActionCount + ' operacji swapow');
-            console.log(totalAddDropActionCount + ' operacji add/drop');
 
         } else if (searchIterations % 1000 == 0) {
 
@@ -195,7 +234,6 @@ exports.generateFlaggedSolution = function (pool, reqs, allrgs, prefs, dishlist,
 
         } else {
 
-            moveSolutionKey > possibleMovesRand.length ? totalSwapActionCount++ : totalAddDropActionCount++;
             searchIterations++;
             return flaggedTabuSearch(neighbourhood[moveSolutionKey]);
 

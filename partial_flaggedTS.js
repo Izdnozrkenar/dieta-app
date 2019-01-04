@@ -165,6 +165,49 @@ exports.generatePartialFlaggedSolution = function (pool, reqs, allrgs, prefs, di
                 neighbourhood.push(tempSolution);
             }
 
+            for (var i = 0; i < (10*flagset.allowRandomMoves); i++) {
+
+                var tempSolution = JSON.parse(JSON.stringify(solution));
+       
+                /* generating random choice */
+       
+                for (var j = 0; j < 3; j++) {
+       
+                   var addDropChangeIndex = [randomNumber.getRandomNumber(0, tempSolution.length -1), randomNumber.getRandomNumber(0, 4)];
+       
+                   switch (true) {
+                      case addDropChangeIndex[1] == 0: {
+                         var randomBreakfastId = randomNumber.getRandomNumber(0, dishSet['breakfasts'].length - 1);
+                         tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = dishSet['breakfasts'][randomBreakfastId];
+                         break;
+                      }
+                      case addDropChangeIndex[1] == 1: {
+                         var randomSecondBreakfastId = randomNumber.getRandomNumber(0, dishSet['secondBreakfasts'].length - 1);
+                         tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = dishSet['secondBreakfasts'][randomSecondBreakfastId];
+                         break;
+                      }
+                      case addDropChangeIndex[1] == 2: {
+                         var randomLunchId = randomNumber.getRandomNumber(0, dishSet['lunches'].length - 1);
+                         tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = dishSet['lunches'][randomLunchId];
+                         break;
+                      }
+                      case addDropChangeIndex[1] == 3: {
+                         var randomMeriendaId = randomNumber.getRandomNumber(0, dishSet['meriendas'].length - 1);
+                         tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = dishSet['meriendas'][randomMeriendaId];
+                         break;
+                      }
+                      case addDropChangeIndex[1] == 4: {
+                         var randomDinnerId = randomNumber.getRandomNumber(0, dishSet['dinners'].length - 1);
+                         tempSolution[addDropChangeIndex[0]][addDropChangeIndex[1]] = dishSet['dinners'][randomDinnerId];
+                         break;
+                      }
+                   }
+                }
+                neighbourhood[i] = tempSolution;
+             }
+
+            
+
             var moveValues = {};
 
             for (var tabu in atributesTabuList) {

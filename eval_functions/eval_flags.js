@@ -15,7 +15,8 @@ exports.getFlagsForSoltuion = function (solution, reqs, preferences, dishlist) {
         needsMoreFiber: 0,
         needsLessFiber: 0,
         isMonotonous: 0,
-        hasNonPrefferedDishes: 0
+        hasNonPrefferedDishes: 0,
+        allowRandomMoves: 0
     }
 
     var monotonnyScore = 0;
@@ -88,6 +89,18 @@ exports.getFlagsForSoltuion = function (solution, reqs, preferences, dishlist) {
             })
         });
     }(true)
+
+    var allowNormalMoves = function(){
+
+        flagset.allowRandomMoves = true;
+        // flagset.forEach(flag => {
+        //     if(flag){
+        //         flagset.allowRandomMoves = false;
+        //         return;
+        //     }
+        // })
+        
+    }
 
     return flagset;
 }
