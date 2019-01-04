@@ -54,8 +54,8 @@ exports.getFlagsForSoltuion = function (solution, reqs, preferences, dishlist) {
         if (fatDemand < -0.3) { flagset.needsLessFat = true; }
         if (carbohydratesDemand > 0.3) { flagset.needsMoreCarbohydrates = true; }
         if (carbohydratesDemand < -0.3) { flagset.needsLessCarbohydrates = true; }
-        if (fatDemand > 0.3) { flagset.needsMoreFiber = true; }
-        if (fatDemand < -0.3) { flagset.needsLessFiber = true; }
+        if (fiberDemand > 0.3) { flagset.needsMoreFiber = true; }
+        if (fiberDemand < -0.3) { flagset.needsLessFiber = true; }
 
     }(true);
 

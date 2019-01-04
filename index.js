@@ -25,7 +25,7 @@ var preferences = {
     180: -1,
 }
 
-var requirements = evaluator.calculateRequirements(1, 25, 2.4, 60);
+var requirements = evaluator.calculateRequirements(1, 25, 1.8, 70);
 
 
 pool.query('SELECT dshID, dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFiber FROM dishes')
@@ -36,10 +36,10 @@ pool.query('SELECT dshID, dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFi
             preferences[values.dshID] = 0;
         })
         //var rndTSinflu = randomTSinfluence.generateRandomSolutionWithInfluenceMechanism(pool, requirements, [], preferences, dishList, 20, 20, 10, 3);
-        var rndTS = randomTS.generateRandomSolution(pool, requirements, [], preferences, dishList, 100, 20, 10);
+        //var rndTS = randomTS.generateRandomSolution(pool, requirements, [], preferences, dishList, 500, 20, 10);
         //var flgTS = flaggedTS.generateFlaggedSolution(pool,requirements,[0],preferences,dishList,500);
-        var prndTS = partialRandomTS.generatePartialRandomSolution(pool,requirements,[0],preferences,dishList,100)
-        //var pflgTS = partialflaggedTS.generatePartialFlaggedSolution(pool,requirements,[0],preferences,dishList,100)
+        //var prndTS = partialRandomTS.generatePartialRandomSolution(pool,requirements,[0],preferences,dishList,100)
+        //var pflgTS = partialflaggedTS.generatePartialFlaggedSolution(pool,requirements,[0],preferences,dishList,500)
         //var soTS = strategicOscilationTS.generateStrategicOscilationSolution(pool,requirements,[0],preferences,dishList,20,5);
 
     })
