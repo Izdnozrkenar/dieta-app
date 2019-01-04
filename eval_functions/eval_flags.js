@@ -93,14 +93,14 @@ exports.getFlagsForSoltuion = function (solution, reqs, preferences, dishlist) {
     var allowNormalMoves = function(){
 
         flagset.allowRandomMoves = true;
-        // flagset.forEach(flag => {
-        //     if(flag){
-        //         flagset.allowRandomMoves = false;
-        //         return;
-        //     }
-        // })
+        for(var flag in flagset){
+            if(flag){
+                flagset.allowRandomMoves = false;
+                return;
+            }
+        }
         
-    }
+    }(true);
 
     return flagset;
 }
