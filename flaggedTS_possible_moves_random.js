@@ -461,25 +461,25 @@ exports.getPossbieMovesForFlagsRandomly = function (solution, flagset, dishSet, 
                             do {
                                 var changeIndex = randomNumber.getRandomNumber(0, dishSet['secondBreakfasts'].length - 1)
                             } while (prefs[changeIndex] == -1 && attempts < 10)
-                            possibleMoves.push([dishSet['breakfasts'][changeIndex], i, j]) 
+                            possibleMoves.push([dishSet['secondBreakfasts'][changeIndex], i, j]) 
                         }
                         case j == 2: {
                             do {
                                 var changeIndex = randomNumber.getRandomNumber(0, dishSet['lunches'].length - 1)
                             } while (prefs[changeIndex] == -1 && attempts < 10)
-                            possibleMoves.push([dishSet['breakfasts'][changeIndex], i, j]) 
+                            possibleMoves.push([dishSet['lunches'][changeIndex], i, j]) 
                         }
                         case j == 3: {
                             do {
                                 var changeIndex = randomNumber.getRandomNumber(0, dishSet['meriendas'].length - 1)
                             } while (prefs[changeIndex] == -1 && attempts < 10)
-                            possibleMoves.push([dishSet['breakfasts'][changeIndex], i, j]) 
+                            possibleMoves.push([dishSet['meriendas'][changeIndex], i, j]) 
                         }
                         case j == 4: {
                             do {
                                 var changeIndex = randomNumber.getRandomNumber(0, dishSet['dinners'].length - 1)
                             } while (prefs[changeIndex] == -1 && attempts < 10)
-                            possibleMoves.push([dishSet['breakfasts'][changeIndex], i, j]) 
+                            possibleMoves.push([dishSet['dinners'][changeIndex], i, j]) 
                         }
                     }
                 }
