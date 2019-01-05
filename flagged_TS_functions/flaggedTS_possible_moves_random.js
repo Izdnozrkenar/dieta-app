@@ -1,5 +1,5 @@
 'use strict';
-const randomNumber = require('./randomNumberGenerator');
+const randomNumber = require('../randomNumberGenerator');
 
 exports.getPossbieMovesForFlagsRandomly = function (solution, flagset, dishSet, flaggedDishlists, prefs) {
 

@@ -1,9 +1,9 @@
 'use strict';
 const events = require('events');
-const randomNumber = require('./randomNumberGenerator');
+const randomNumber = require('../randomNumberGenerator');
 const crypto = require('crypto');
-var evaluate = require('./eval_functions/eval_solution_sync');
-var evaluateFlags = require('./eval_functions/eval_flags');
+var evaluate = require('../eval_functions/eval_solution_sync');
+var evaluateFlags = require('../eval_functions/eval_flags');
 var possibleMovesByFlagsRand = require('./flaggedTS_possible_moves_random')
 
 var flaggedTabuEventEmitter = new events.EventEmitter();

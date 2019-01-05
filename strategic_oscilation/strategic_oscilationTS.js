@@ -1,9 +1,9 @@
 'use strict';
 const events = require('events');
-const randomNumber = require('./randomNumberGenerator');
+const randomNumber = require('../randomNumberGenerator');
 const crypto = require('crypto');
-var evaluate = require('./eval_functions/eval_solution_sync');
-var evalPartial = require('./eval_functions/eval_solution_partial_sync')
+var evaluate = require('../eval_functions/eval_solution_sync');
+var evalPartial = require('../eval_functions/eval_solution_partial_sync')
 
 var pflaggedTabuEventEmitter = new events.EventEmitter();
 

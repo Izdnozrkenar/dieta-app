@@ -1,11 +1,11 @@
 'use strict';
 const dbConnector = require('./poolmodule');
-const randomTS = require('./randomTS.js');
-const randomTSinfluence = require('./randomTSinfluence');
-const flaggedTS = require('./flaggedTS');
-const partialRandomTS = require('./partial_randomTS')
-const partialflaggedTS = require('./partial_flaggedTS')
-const strategicOscilationTS = require('./strategic_oscilationTS')
+const randomTS = require('./random_TS_functions/randomTS.js');
+const randomTSinfluence = require('./random_TS_functions/randomTSinfluence');
+const flaggedTS = require('./flagged_TS_functions/flaggedTS');
+const partialRandomTS = require('./random_TS_functions/partial_randomTS')
+const partialflaggedTS = require('./flagged_TS_functions/partial_flaggedTS')
+const strategicOscilationTS = require('./strategic_oscilation/strategic_oscilationTS')
 const dbUpdate = require('./databaseStaticUpdate');
 const evaluator = require('./eval_functions/eval_condidtions')
 
