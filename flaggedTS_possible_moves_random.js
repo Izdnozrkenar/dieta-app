@@ -448,7 +448,7 @@ exports.getPossbieMovesForFlagsRandomly = function (solution, flagset, dishSet, 
     if (flagset.hasNonPrefferedDishes) {
         for (var i = 0; i < solution.length; i++) {
             for (var j = 0; j < solution[i].length; j++) {
-                if (prefs[soltion[i][j]] == -1) {
+                if (prefs[solution[i][j]] == -1) {
                     var attempts = 0;
                     switch (true) {
                         case j == 0: {

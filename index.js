@@ -16,8 +16,7 @@ const pool = dbConnector.setConnectionToDatabase();
 const conn = dbConnector.setCallbackConnectionToDatabase();
 dbUpdate.updateDishesDatabase(pool, conn);
 
-var preferences = {
-}
+var preferences = {}
 
 var requirements = evaluator.calculateRequirements(1, 25, 1.8, 70);
 
@@ -27,7 +26,7 @@ pool.query('SELECT dshID, dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFi
 
         res.forEach(values => {
             dishList[values.dshID]=values;
-            preferences[values.dshID] = 0;
+            //preferences[values.dshID] = 0;
         })
         var rndTSinflu = randomTSinfluence.generateRandomSolutionWithInfluenceMechanism(pool, requirements, [], preferences, dishList, 100, 20, 10, 3);
         var rndTS = randomTS.generateRandomSolution(pool, requirements, [], preferences, dishList, 100, 20, 10);

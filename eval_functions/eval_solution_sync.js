@@ -63,15 +63,11 @@ exports.evaluateSolution = function (solution, reqs, preferences, dishlist) {
     var evaluatePreferences = function (){
         for (var i = 0; i < solution.length; i++) {
             solution[i].forEach(dish => {
-                switch (dish){
-                    case preferences[dish] == 1:{
-                        prefScore -= 5;
-                        break;
-                    }
-                    case preferences[dish] == -1:{
-                        prefScore += 5;
-                        break;
-                    }
+                if(preferences[dish] == 1){
+                    prefScore -= 5;
+                }
+                if(preferences[dish] == -1){
+                    prefScore += 5;
                 }
             })
         }
