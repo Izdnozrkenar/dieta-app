@@ -7,7 +7,7 @@ var evalPartial = require('../eval_functions/eval_solution_partial_sync')
 
 var pflaggedTabuEventEmitter = new events.EventEmitter();
 
-exports.generatePartialRandomSolution = function (pool, reqs, allrgs, prefs, dishlist, iterations) {
+exports.generatePartialRandomSolution = async function (pool, reqs, allrgs, prefs, iterations, callback) {return new Promise(resolve => {
 
     var solutionsTabuList = {};
     var atributesTabuList = {};
@@ -19,6 +19,9 @@ exports.generatePartialRandomSolution = function (pool, reqs, allrgs, prefs, dis
         meriendas: [],
         dinners: []
     };
+
+    var dishListSet = {}
+    
 
     var flaggedDishesSet = {
         richInEnergy: [],
@@ -38,7 +41,7 @@ exports.generatePartialRandomSolution = function (pool, reqs, allrgs, prefs, dis
 
     getDishesByType(pool);
 
-    pflaggedTabuEventEmitter.on('dishesID_received', () => {
+    pflaggedTabuEventEmitter.on('dishlist_received', () => {
 
         var solution = [];
         var blocksCount = 0;
@@ -77,7 +80,7 @@ exports.generatePartialRandomSolution = function (pool, reqs, allrgs, prefs, dis
             }
 
             for (var index = 0; index < row.length; index++) {
-                moveValues[index] = evalPartial.evaluatePartialSolution(row[index], reqs, prefs, dishlist);
+                moveValues[index] = evalPartial.evaluatePartialSolution(row[index], reqs, prefs, dishListSet);
             }
 
             var currentSolutionValue = moveValues[0];
@@ -106,7 +109,7 @@ exports.generatePartialRandomSolution = function (pool, reqs, allrgs, prefs, dis
             }
 
             if (rowsCount == 5) {
-                optimizeSolutionBlock(0,false)
+                optimizeSolutionBlock(0, false)
             } else {
                 solution.push(row[moveSolutionKey]);
                 getRow(++rowsCount)
@@ -116,7 +119,7 @@ exports.generatePartialRandomSolution = function (pool, reqs, allrgs, prefs, dis
         function optimizeSolutionBlock(blockIterationsCount, allowSwaps) {
 
             var neighbourhood = [];
-            var currentSolutionValue = evaluate.evaluateSolution(solution, reqs, prefs, dishlist);
+            var currentSolutionValue = evaluate.evaluateSolution(solution, reqs, prefs, dishListSet);
 
             for (var i = 0; i < 20; i++) {
 
@@ -162,29 +165,29 @@ exports.generatePartialRandomSolution = function (pool, reqs, allrgs, prefs, dis
             for (var i = 0; i < 15 * (allowSwaps); i++) {
 
                 var tempSolution = JSON.parse(JSON.stringify(solution));
-    
+
                 var swapChangeIndexFrom = [];
                 var swapChangeIndexTo = [];
-    
+
                 for (var q = 0; q < 2; q++) {
-    
+
                     do {
                         swapChangeIndexFrom[q] = [randomNumber.getRandomNumber(0, 29), randomNumber.getRandomNumber(0, 4)];
                     } while (!tempSolution[swapChangeIndexFrom[q][0]][swapChangeIndexFrom[q][1]])
-    
+
                     do {
                         swapChangeIndexTo[q] = [randomNumber.getRandomNumber(0, 29), swapChangeIndexFrom[q][1]];
                     } while (!tempSolution[swapChangeIndexTo[q][0]][swapChangeIndexTo[q][1]])
                 }
-    
-    
-    
+
+
+
                 for (var k = 0; k < swapChangeIndexFrom.length; k++) {
                     var swappedDish = tempSolution[swapChangeIndexFrom[k][0]][swapChangeIndexFrom[k][1]];
                     tempSolution[swapChangeIndexFrom[k][0]][swapChangeIndexFrom[k][1]] = tempSolution[swapChangeIndexTo[k][0]][swapChangeIndexTo[k][1]];
                     tempSolution[swapChangeIndexTo[k][0]][swapChangeIndexTo[k][1]] = swappedDish;
                 }
-    
+
                 neighbourhood.push(tempSolution);
             }
 
@@ -197,7 +200,7 @@ exports.generatePartialRandomSolution = function (pool, reqs, allrgs, prefs, dis
             }
 
             for (var index = 0; index < neighbourhood.length; index++) {
-                moveValues[index] = evaluate.evaluateSolution(neighbourhood[index], reqs, prefs, dishlist);
+                moveValues[index] = evaluate.evaluateSolution(neighbourhood[index], reqs, prefs, dishListSet);
             }
 
             var moveSolutionKey = 0
@@ -224,25 +227,30 @@ exports.generatePartialRandomSolution = function (pool, reqs, allrgs, prefs, dis
                     }
                 }
             }
-            if(blockIterationsCount == (iterations+50)){
+            if (blockIterationsCount == (iterations + 50)) {
 
-                console.log(evaluate.evaluateSolution(solution, reqs, prefs, dishlist))
+                for(var i = 0; i< solution.length; i++){
+                    for(var j=0; j< solution[i].length;j++){
+                        solution[i][j]=dishListSet[solution[i][j]]['dshName']
+                    }
+                }
+                callback(solution);
 
             } else if (blocksCount == 5) {
 
-                optimizeSolutionBlock(blockIterationsCount+1, true);
+                optimizeSolutionBlock(blockIterationsCount + 1, true);
 
             } else if (blockIterationsCount === iterations) {
 
                 blocksCount++;
-                getRow(0)                
+                getRow(0)
 
             } else {
-                
+
                 setTimeout(() => {
-                    optimizeSolutionBlock(blockIterationsCount+1, false);
+                    optimizeSolutionBlock(blockIterationsCount + 1, false);
                 }, 1);
-        
+
             }
         }
 
@@ -327,4 +335,15 @@ exports.generatePartialRandomSolution = function (pool, reqs, allrgs, prefs, dis
                 pflaggedTabuEventEmitter.emit('dishesID_received');
             })
     })
-}
+
+    pflaggedTabuEventEmitter.on('dishesID_received', () => {
+
+        pool.query('SELECT dshID, dshName, dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFiber FROM dishes')
+        .then(async res => {
+            res.forEach(values => {
+                dishListSet[values.dshID] = values;
+            })
+            pflaggedTabuEventEmitter.emit('dishlist_received');
+        })
+    })
+})}

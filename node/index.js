@@ -8,6 +8,7 @@ const partialflaggedTS = require('./flagged_TS_functions/partial_flaggedTS')
 const strategicOscilationTS = require('./strategic_oscilation/strategic_oscilationTS')
 const dbUpdate = require('./databaseStaticUpdate');
 const evaluator = require('./eval_functions/eval_condidtions')
+var express = require('express')
 
 
 var dishList = {};
@@ -20,19 +21,28 @@ var preferences = {}
 
 var requirements = evaluator.calculateRequirements(1, 25, 1.8, 70);
 
+var app = express();
+var port = process.env.PORT || 3000;
 
-pool.query('SELECT dshID, dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFiber FROM dishes')
-    .then(res => {
+app.listen(port);
 
-        res.forEach(values => {
-            dishList[values.dshID]=values;
-            //preferences[values.dshID] = 0;
-        })
-        var rndTSinflu = randomTSinfluence.generateRandomSolutionWithInfluenceMechanism(pool, requirements, [], preferences, dishList, 100, 20, 10, 3);
-        var rndTS = randomTS.generateRandomSolution(pool, requirements, [], preferences, dishList, 100, 20, 10);
-        var flgTS = flaggedTS.generateFlaggedSolution(pool,requirements,[0],preferences,dishList,100);
-        var prndTS = partialRandomTS.generatePartialRandomSolution(pool,requirements,[0],preferences,dishList,100)
-        var pflgTS = partialflaggedTS.generatePartialFlaggedSolution(pool,requirements,[0],preferences,dishList,100)
-        var soTS = strategicOscilationTS.generateStrategicOscilationSolution(pool,requirements,[0],preferences,dishList,20,5);
 
+var done = false;
+var diet = [];
+
+function wait(ms) {
+    return new Promise(r => setTimeout(r, ms));
+}
+
+app.route('/dania').get(async function (req, res) {
+    var generation = await getQuery((val) => {
+        res.json(val)
     })
+})
+
+async function getQuery(resolve) {
+    var prndTS = await partialRandomTS.generatePartialRandomSolution(pool, requirements, [0], preferences, 10, function (bsol) {
+        diet = JSON.parse(JSON.stringify(bsol));
+        resolve(diet);
+    })
+}
