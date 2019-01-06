@@ -56,10 +56,10 @@
     </div>
   </section>
 
-  <section id="services">
+  <section>
     <div class="container">
       <div class="row">
-        <div class="col-lg-7 col-md-8">
+        <div class="col-lg-7 col-md-8" id="services">
           <div class="input-group">
             <button class="btn btn-outline-secondary" type="button">Dni 1 - 5</button>
             <button class="btn btn-outline-secondary" type="button">Dni 6 - 10</button>
@@ -125,21 +125,21 @@
           </table>
         </div>
         <div class="col-lg-4 offset-lg-1 text-center">
-          <form>
+          <form id='requriments-form'>
             <div class="form-group row">
-              <label for="inputEmail3" class="col-sm-2 col-form-label">Wiek</label>
+              <label for="age" class="col-sm-2 col-form-label">Wiek</label>
               <div class="col-sm-8 offset-sm-2">
-                <input type="number" class="form-control" id="inputEmail3" min='0'placeholder="Wiek">
+                <input name='age' type="number" class="form-control" id="ageId" min='0' placeholder="Wiek">
               </div>
             </div>
             <div class="form-group row">
               <label for="inputEmail3" class="col-sm-2 col-form-label">Waga</label>
               <div class="col-sm-8 offset-sm-2">
-                <input type="number" class="form-control" id="inputEmail3" min='0' placeholder="Waga">
+                <input name='weigth' type="number" class="form-control" id="weigthId" min='0' placeholder="Waga">
               </div>
             </div>
             <div class="form-group row">
-                <select class="form-control">
+                <select class="form-control" name='physical activity'>
                     <option selected>Wybierz</option>
                   <option value="1.2">Niski</option>
                   <option value="1.5">Raczej niski</option>
@@ -153,14 +153,14 @@
                 <legend class="col-form-label col-sm-2 pt-0">Płeć</legend>
                 <div class="col-sm-10">
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="maleChoice" id="maleChoice" value="1"
+                    <input class="form-check-input" type="radio" name="sexChoice" id="maleChoiceId" value="1"
                       checked>
                     <label class="form-check-label" for="male">
                       Mężczyzna
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="femaleChoice" id="femaleChoice" value="0">
+                    <input class="form-check-input" type="radio" name="sexChoice" id="femaleChoiceId" value="0">
                     <label class="form-check-label" for="female">
                       Kobieta
                     </label>
@@ -172,43 +172,43 @@
               <div class="col-sm-2">Preferowane potrawy</div>
               <div class="col-sm-10">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="pref1">
+                  <input class="form-check-input" type="checkbox" id="pref1" name = 'pKurczak'>
                   <label class="form-check-label" for="pKurczak">
                     Kurczak
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="pref2">
+                  <input class="form-check-input" type="checkbox" id="pref2" name = 'pWieprzowina'>
                   <label class="form-check-label" for="pWieprzowina">
                     Wieprzowina
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="pref3">
+                  <input class="form-check-input" type="checkbox" id="pref3" name = 'pJajka'>
                   <label class="form-check-label" for="pJajka">
                     Jajka
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="pref4">
+                  <input class="form-check-input" type="checkbox" id="pref4" name = 'pPieczywoRazowe'>
                   <label class="form-check-label" for="pPieczywoRazowe">
                     Pieczywo razowe
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="pref5">
-                  <label class="form-check-label" for="pPieczywoRszenne">
+                  <input class="form-check-input" type="checkbox" id="pref5" name = 'pPieczywoPszenne'>
+                  <label class="form-check-label" for="pPieczywoPszenne">
                     Pieczywo pszenne
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="pref6">
+                  <input class="form-check-input" type="checkbox" id="pref6" name = 'pSłodycze'>
                   <label class="form-check-label" for="pSłodycze">
                     Słodycze
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="pref7">
+                  <input class="form-check-input" type="checkbox" id="pref7" name = 'pMusli'>
                   <label class="form-check-label" for="pMusli">
                     Musli
                   </label>
@@ -225,49 +225,49 @@
               <div class="col-sm-2">Niepreferowane potrawy</div>
               <div class="col-sm-10">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="npref1">
+                  <input class="form-check-input" type="checkbox" id="npref1" name="npKurczak">
                   <label class="form-check-label" for="npKurczak">
                     Kurczak
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="npref2">
+                  <input class="form-check-input" type="checkbox" id="npref2" name="npWieprzowina">
                   <label class="form-check-label" for="npWieprzowina">
                     Wieprzowina
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="npref3">
+                  <input class="form-check-input" type="checkbox" id="npref3" name="npWieprzowina">
                   <label class="form-check-label" for="npJajka">
                     Jajka
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="npref4">
+                  <input class="form-check-input" type="checkbox" id="npref4" name="npPieczywoRazowe">
                   <label class="form-check-label" for="npPieczywoRazowe">
                     Pieczywo razowe
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="npref5">
+                  <input class="form-check-input" type="checkbox" id="npref5" name="npPieczywoPszenne">
                   <label class="form-check-label" for="npPieczywoPszenne">
                     Pieczywo pszenne
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="npref6">
+                  <input class="form-check-input" type="checkbox" id="npref6" name="npSłodycze">
                   <label class="form-check-label" for="npSłodycze">
                     Słodycze
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="npref7">
+                  <input class="form-check-input" type="checkbox" id="npref7" name="npMusli">
                   <label class="form-check-label" for="npMusli">
                     Musli
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="npref8">
+                  <input class="form-check-input" type="checkbox" id="npref8" name="npLody">
                   <label class="form-check-label" for="npLody">
                     Lody
                   </label>
@@ -278,43 +278,43 @@
               <div class="col-sm-2">Alergie</div>
               <div class="col-sm-10">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="alr1">
+                  <input class="form-check-input" type="checkbox" id="alr1" name="alrOrzechy">
                   <label class="form-check-label" for="alrOrzechy">
                     Orzechy
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="alr2">
+                  <input class="form-check-input" type="checkbox" id="alr2" name="alrJajka">
                   <label class="form-check-label" for="alrJajka">
                     Jajka
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="alr3">
+                  <input class="form-check-input" type="checkbox" id="alr3" name="alrMlekoKrowie">
                   <label class="form-check-label" for="alrMlekoKrowie">
                     Mleko krowie
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="alr4">
+                  <input class="form-check-input" type="checkbox" id="alr4" name="alrOwoceMorza">
                   <label class="form-check-label" for="alrOwoceMorza">
                     Owoce morza
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="alr5">
+                  <input class="form-check-input" type="checkbox" id="alr5" name="alrRyby">
                   <label class="form-check-label" for="alrRyby">
                     Ryby
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="alr6">
+                  <input class="form-check-input" type="checkbox" id="alr6" name="alrSoja">
                   <label class="form-check-label" for="alrSoja">
                     Soja
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="alr8">
+                  <input class="form-check-input" type="checkbox" id="alr8" name="alrPszenica">
                   <label class="form-check-label" for="alrPszenica">
                     Pszenica
                   </label>
