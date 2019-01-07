@@ -337,3 +337,8 @@ header.masthead p {
 .table-hover tbody tr td:hover {
   background-color: #F05F40 !important
 }
+
+.dish-type-display{
+  float: left;
+  clear: both;
+}

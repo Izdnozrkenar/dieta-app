@@ -7,7 +7,7 @@ var evalPartial = require('../eval_functions/eval_solution_partial_sync')
 
 var pflaggedTabuEventEmitter = new events.EventEmitter();
 
-exports.generatePartialRandomSolution = async function (pool, reqs, allrgs, prefs, iterations, callback) {return new Promise(resolve => {
+exports.generatePartialRandomSolution = async function (pool, reqs, allrgs, prefs, iterations,callback) {return new Promise(resolve => {
 
     var solutionsTabuList = {};
     var atributesTabuList = {};
@@ -234,7 +234,9 @@ exports.generatePartialRandomSolution = async function (pool, reqs, allrgs, pref
                         solution[i][j]=dishListSet[solution[i][j]]['dshName']
                     }
                 }
+                
                 callback(solution);
+                return;
 
             } else if (blocksCount == 5) {
 

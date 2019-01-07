@@ -21,10 +21,14 @@
   reqsForm = document.querySelector('#requriments-form')
   if (reqsForm.addEventListener) {
     reqsForm.addEventListener("submit", function (e) {
-
+      e.preventDefault();
       var formValues = $(reqsForm).serializeArray();
       console.log(formValues);
-      e.preventDefault();
+      jQuery.post('http://35.237.252.145:3000/requriments',formValues).done(function(data){
+        console.log('skonczylem')
+      })
+
+      
 
     }, false);
   }

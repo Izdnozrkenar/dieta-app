@@ -24,7 +24,7 @@ var requirements = evaluator.calculateRequirements(1, 25, 1.8, 70);
 var app = express();
 var port = process.env.PORT || 3000;
 
-app.listen(port);
+app.listen(port, '0.0.0.0');
 
 
 var done = false;
@@ -34,15 +34,52 @@ function wait(ms) {
     return new Promise(r => setTimeout(r, ms));
 }
 
-app.route('/dania').get(async function (req, res) {
-    var generation = await getQuery((val) => {
-        res.json(val)
-    })
+// app.post('/requriments', async function(req, res){
+//     var requrimentsFromForm = express.json(req);
+//     console.log(requrimentsFromForm);
+//     var generation = await getQuery(function (val) {
+//         if (!res.headersSent) {
+//             console.log('elo wale wiadro')
+//             setTimeout(() => {
+//                 if (!res.headersSent) {
+//                     res.json(val)
+//                 }
+
+//             }, 10);
+
+//         }
+//         return;
+//     });
+//     return;
+// })
+
+
+app.get('/dania', async function (req, res, next) {
+
+    var generation = await getQuery(function (val) {
+        if (!res.headersSent) {
+            setTimeout(() => {
+                if (!res.headersSent) {
+                    res.json(val)
+                }
+
+            }, 10);
+
+        }
+        return;
+    });
+    return;
 })
 
+// app.route('/test').get(async function (req, res) {
+//     return res.json({})
+// })
+
+
 async function getQuery(resolve) {
-    var prndTS = await partialRandomTS.generatePartialRandomSolution(pool, requirements, [0], preferences, 10, function (bsol) {
-        diet = JSON.parse(JSON.stringify(bsol));
-        resolve(diet);
+    var prndTS = await partialRandomTS.generatePartialRandomSolution(pool, requirements, [0], preferences, 50, function (sol) {
+        resolve(sol)
+        return;
     })
+
 }
