@@ -41,7 +41,7 @@ exports.generatePartialRandomSolution = async function (pool, reqs, allrgs, pref
 
     getDishesByType(pool);
 
-    pflaggedTabuEventEmitter.on('dishlist_received', () => {
+    pflaggedTabuEventEmitter.once('dishlist_received', () => {
 
         var solution = [];
         var blocksCount = 0;
@@ -325,7 +325,7 @@ exports.generatePartialRandomSolution = async function (pool, reqs, allrgs, pref
             })
     }
 
-    pflaggedTabuEventEmitter.on('dishesTypes_sorted', () => {
+    pflaggedTabuEventEmitter.once('dishesTypes_sorted', () => {
 
         pool.query('SELECT dishes.dshID, allergens.alrID FROM dishes JOIN products_dishes_xref,products,products_allergens_xref, allergens WHERE products_dishes_xref.dshID = dishes.dshID AND products.prdID = products_dishes_xref.prdID AND products.prdID = products_allergens_xref.prdID  AND allergens.alrID = products_allergens_xref.alrID ')
             .then(res => {
@@ -338,7 +338,7 @@ exports.generatePartialRandomSolution = async function (pool, reqs, allrgs, pref
             })
     })
 
-    pflaggedTabuEventEmitter.on('dishesID_received', () => {
+    pflaggedTabuEventEmitter.once('dishesID_received', () => {
 
         pool.query('SELECT dshID, dshName, dshEnergy, dshProtein, dshFat, dshCarbohydrates, dshFiber FROM dishes')
         .then(async res => {

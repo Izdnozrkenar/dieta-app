@@ -34,42 +34,29 @@ function wait(ms) {
     return new Promise(r => setTimeout(r, ms));
 }
 
-// app.post('/requriments', async function(req, res){
-//     var requrimentsFromForm = express.json(req);
-//     console.log(requrimentsFromForm);
-//     var generation = await getQuery(function (val) {
-//         if (!res.headersSent) {
-//             console.log('elo wale wiadro')
-//             setTimeout(() => {
-//                 if (!res.headersSent) {
-//                     res.json(val)
-//                 }
-
-//             }, 10);
-
-//         }
-//         return;
-//     });
-//     return;
-// })
-
-
-app.get('/dania', async function (req, res, next) {
-
+app.post('/requriments', async function (req, res) {
+    var requrimentsFromForm = express.json(req);
+    console.log(requrimentsFromForm);
     var generation = await getQuery(function (val) {
         if (!res.headersSent) {
-            setTimeout(() => {
-                if (!res.headersSent) {
-                    res.json(val)
-                }
-
-            }, 10);
-
+            res.json(val)
         }
         return;
     });
     return;
 })
+
+
+// app.get('/dania', async function (req, res, next) {
+
+//     var generation = await getQuery(function (val) {
+//         if (!res.headersSent) {
+//             res.json(val)
+//         }
+//         return;
+//     });
+//     return;
+// })
 
 // app.route('/test').get(async function (req, res) {
 //     return res.json({})
