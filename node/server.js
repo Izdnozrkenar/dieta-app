@@ -7,7 +7,8 @@ const partialRandomTS = require('./random_TS_functions/partial_randomTS')
 const partialflaggedTS = require('./flagged_TS_functions/partial_flaggedTS')
 const strategicOscilationTS = require('./strategic_oscilation/strategic_oscilationTS')
 const dbUpdate = require('./databaseStaticUpdate');
-const evaluator = require('./eval_functions/eval_condidtions')
+const evaluator = require('./eval_functions/eval_condidtions');
+const cors = require('cors');
 var express = require('express')
 
 
@@ -30,13 +31,13 @@ app.listen(port, '0.0.0.0');
 var done = false;
 var diet = [];
 
-function wait(ms) {
-    return new Promise(r => setTimeout(r, ms));
+const corsOptions = {
+    origin: 'http://35.237.252.145'
 }
 
-app.post('/requriments', async function (req, res) {
+
+app.post('/requriments',cors(corsOptions), async function (req, res) {
     var requrimentsFromForm = express.json(req);
-    console.log(requrimentsFromForm);
     var generation = await getQuery(function (val) {
         if (!res.headersSent) {
             res.json(val)
@@ -64,7 +65,7 @@ app.post('/requriments', async function (req, res) {
 
 
 async function getQuery(resolve) {
-    var prndTS = await partialRandomTS.generatePartialRandomSolution(pool, requirements, [0], preferences, 50, function (sol) {
+    var prndTS = await partialRandomTS.generatePartialRandomSolution(pool, requirements, [0], preferences, 2, function (sol) {
         resolve(sol)
         return;
     })

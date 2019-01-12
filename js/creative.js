@@ -18,22 +18,37 @@
 })(jQuery); // End of use strict
 
 (function ($) {
-  reqsForm = document.querySelector('#requriments-form')
-  if (reqsForm.addEventListener) {
-    reqsForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var formValues = $(reqsForm).serializeArray();
-      console.log(formValues);
-      jQuery.post('http://35.237.252.145:3000/requriments',formValues).done(function(data){
-        console.log('skonczylem')
-      })
+  $('#requriments-form').submit(function (event) {
 
-      
+    event.preventDefault();
 
-    }, false);
-  }
+    var $form = $(this);
+    term = $form.find("input[name='age']").val(),
+      url = 'http://35.237.252.145:3000/requriments';
 
+    var posting = $.post(url, { s: term });
 
+    posting.done(function (data) {
+      addDishToTable('period-one-table', data)
+    });
+
+  })
 })(jQuery);
+
+function addDishToTable(tableID, dietTable) {
+
+  let tableRef = document.getElementById('period-one-table').getElementsByTagName('tbody')[0];
+
+  dietTable.forEach((dishDay, dayIndex) => {
+    let newRow = document.getElementById('d'+(dayIndex+1));
+
+    dishDay.forEach(dish => {
+      let newDish = newRow.insertCell(-1);
+      let dishName = document.createTextNode(dish);
+      newDish.appendChild(dishName);
+    })
+  });
+
+}
 
 
