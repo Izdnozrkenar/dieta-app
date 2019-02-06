@@ -21,34 +21,76 @@
   $('#requriments-form').submit(function (event) {
 
     event.preventDefault();
-
+    showDayTable();
     var $form = $(this);
-    term = $form.find("input[name='age']").val(),
-      url = 'http://35.237.252.145:3000/requriments';
+    uAge = $form.find("input[name='age']").val(),
+    uWeigth = $form.find("input[name='age']").val(),
+    uPA = $form.find("select[name='physical-activity']").val(),
+    uSexChoice = $form.find("input[name='sexChoice']").val();
 
-    var posting = $.post(url, { s: term });
+    getPreferences();
+    
+    var url = 'http://35.237.252.145:3000/requriments';
+
+    if(uSexChoice == 0 && uWeigth > 75){
+      uWeigth = 75;
+    }
+
+    var posting = $.post(url, { age: uAge , weigth: uWeigth, pa: uPA, sex: uSexChoice });
 
     posting.done(function (data) {
-      addDishToTable('period-one-table', data)
+      addDishToTable(data)
     });
 
   })
 })(jQuery);
 
-function addDishToTable(tableID, dietTable) {
+function addDishToTable(dietTable) {
 
-  let tableRef = document.getElementById('period-one-table').getElementsByTagName('tbody')[0];
+  let tableRef = document.getElementById('period-one-table').getElementsByTagName('tbody');
 
   dietTable.forEach((dishDay, dayIndex) => {
     let newRow = document.getElementById('d'+(dayIndex+1));
 
-    dishDay.forEach(dish => {
-      let newDish = newRow.insertCell(-1);
-      let dishName = document.createTextNode(dish);
-      newDish.appendChild(dishName);
-    })
+    if(newRow.childElementCount > 1){
+
+      dishDay.forEach((dish,index) => {
+        var changingCell = newRow.getElementsByTagName('td')[index];
+        changingCell.innerHTML=dish;
+      })
+
+    } else {
+      dishDay.forEach(dish => {
+
+        let newDish = newRow.insertCell(-1);
+        let dishName = document.createTextNode(dish);
+        newDish.appendChild(dishName);
+      })
+    }
+
+    
   });
 
+  $('#t1').show();
 }
 
+function getPreferences(){
+  var $form = $(this);
+
+  var prefs = {
+    pKurczak : $form.find("input[name='pKurczak']").val(),
+    pWieprzowina : $form.find('#pref2').is(':checked') ,
+    pJajka : $form.find("input[name='pJajka']").is(':checked') ? 1 : 0,
+    pPieczywoRazowe : $form.find("input[name='pPieczywoRazowe']").is(':checked'),
+    pPieczywoPszenne : $form.find("input[name='pPieczywoPszenne']").is(':checked'),
+    pSłodycze : $form.find("input[name='pSłodycze']").is(':checked'),
+    pMusli : $form.find("input[name='pMusli']").is(':checked'),
+    pLody : $form.find("input[name='pLody']").is(':checked')
+  }
+}
+
+function showDayTable(id){
+  $('#t1,#t2,#t3,#t4,#t5,#t6').hide();
+  $(id).show();
+}
 

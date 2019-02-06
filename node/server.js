@@ -10,6 +10,8 @@ const dbUpdate = require('./databaseStaticUpdate');
 const evaluator = require('./eval_functions/eval_condidtions');
 const cors = require('cors');
 var express = require('express')
+const bodyParser = require('body-parser');
+
 
 
 var dishList = {};
@@ -20,24 +22,26 @@ dbUpdate.updateDishesDatabase(pool, conn);
 
 var preferences = {}
 
-var requirements = evaluator.calculateRequirements(1, 25, 1.8, 70);
+var requirements = {}
 
 var app = express();
 var port = process.env.PORT || 3000;
 
 app.listen(port, '0.0.0.0');
-
-
-var done = false;
-var diet = [];
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const corsOptions = {
     origin: 'http://35.237.252.145'
 }
 
+var requirements = {}
 
 app.post('/requriments',cors(corsOptions), async function (req, res) {
-    var requrimentsFromForm = express.json(req);
+
+    requirements = evaluator.calculateRequirements(req.body.sex, req.body.age, req.body.pa, req.body.weigth);
+
+
+
     var generation = await getQuery(function (val) {
         if (!res.headersSent) {
             res.json(val)
@@ -48,24 +52,8 @@ app.post('/requriments',cors(corsOptions), async function (req, res) {
 })
 
 
-// app.get('/dania', async function (req, res, next) {
-
-//     var generation = await getQuery(function (val) {
-//         if (!res.headersSent) {
-//             res.json(val)
-//         }
-//         return;
-//     });
-//     return;
-// })
-
-// app.route('/test').get(async function (req, res) {
-//     return res.json({})
-// })
-
-
 async function getQuery(resolve) {
-    var prndTS = await partialRandomTS.generatePartialRandomSolution(pool, requirements, [0], preferences, 2, function (sol) {
+    var prndTS = await partialRandomTS.generatePartialRandomSolution(pool, requirements, [0], preferences, 300, function (sol) {
         resolve(sol)
         return;
     })
